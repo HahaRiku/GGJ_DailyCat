@@ -44,13 +44,19 @@ public class Cat : MonoBehaviour {
     private float originalAngle = 0.0f;
     private RotationStatus rotationStatus = RotationStatus.逆時針;
 
+    private GameManager GM;
+    private GameObject Player;
+    private float perspectiveRadius = 2.5f;
+
     void Start() {
         perspectivePivot = transform.GetChild(0).gameObject;
         perspectivePivot.SetActive(false);
+        GM = FindObjectOfType<GameManager>();
+        Player = FindObjectOfType<LifeBarPlayer>().gameObject;
     }
 
     void Update() {
-        if(hello) {
+        if (hello) {
             if (helloDir == FourDirection.上) {
                 transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + speed * 5);
                 if (transform.localPosition.y >= helloDestY) {
@@ -84,10 +90,10 @@ public class Cat : MonoBehaviour {
                 }
             }
         }
-        else if(start) {
-            if(dir == Direction.上下) {
-                if(status == Status.正方向) {
-                    if(transform.localPosition.y <= upOrRightMaxValue - speed && !collide) {
+        else if (start) {
+            if (dir == Direction.上下) {
+                if (status == Status.正方向) {
+                    if (transform.localPosition.y <= upOrRightMaxValue - speed && !collide) {
                         transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + speed);
                     }
                     else {
@@ -96,7 +102,7 @@ public class Cat : MonoBehaviour {
                         rotationAngle += 180.0f;
                         rotationAngle %= 360.0f;
                         rotationAngle = ModifyAngle(rotationAngle);
-                        if(collide) {
+                        if (collide) {
                             collide = false;
                             transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - speed * 5);
                         }
@@ -166,20 +172,20 @@ public class Cat : MonoBehaviour {
                 }
             }
         }
-        else if(bye) {
-            if(byeDir == FourDirection.上) {
+        else if (bye) {
+            if (byeDir == FourDirection.上) {
                 transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + speed * 5);
-                if(transform.localPosition.y >= 6) {
+                if (transform.localPosition.y >= 6) {
                     bye = false;
                 }
             }
-            else if(byeDir == FourDirection.下) {
+            else if (byeDir == FourDirection.下) {
                 transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - speed * 5);
                 if (transform.localPosition.y <= -6) {
                     bye = false;
                 }
             }
-            else if(byeDir == FourDirection.右) {
+            else if (byeDir == FourDirection.右) {
                 transform.localPosition = new Vector2(transform.localPosition.x + speed * 5, transform.localPosition.y);
                 if (transform.localPosition.x >= 10) {
                     bye = false;
@@ -193,8 +199,8 @@ public class Cat : MonoBehaviour {
             }
         }
 
-
-        if(start) {
+        if (start) {
+            //perspective rotation
             if (rotationStatus == RotationStatus.逆時針) {
                 if (rotationAngle + rotationSpeed > originalAngle + 45) {
                     rotationStatus = RotationStatus.順時針;
@@ -209,7 +215,32 @@ public class Cat : MonoBehaviour {
             rotationAngle = (rotationStatus == RotationStatus.逆時針) ? rotationAngle + rotationSpeed : rotationAngle - rotationSpeed;
             rotationAngle = ModifyAngle(rotationAngle);
             perspectivePivot.transform.localRotation = Quaternion.Euler(0, 0, rotationAngle);
+
+            //detect player
+            float tempDistance = Distance(Player.transform.localPosition, transform.localPosition);
+            Vector2 v = new Vector2(perspectiveRadius * Mathf.Cos(rotationAngle * 3.14f / 180), perspectiveRadius * Mathf.Sin(rotationAngle * 3.14f / 180));
+            float tempAngle = Mathf.Acos(Dot(GetVector(Player.transform.localPosition, transform.localPosition), v) / tempDistance / perspectiveRadius) * 180 / 3.14f;
+            tempAngle = ModifyAngle(tempAngle);
+            print(tempAngle);
+            if (tempDistance <= perspectiveRadius && tempAngle < 45 && tempAngle > -45) {
+                perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
+            }
+            else {
+                perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+            }
         }
+    }
+
+    float Dot(Vector2 v1, Vector2 v2) {
+        return v1.x * v2.x + v1.y * v2.y;
+    }
+
+    Vector2 GetVector(Vector2 pos1, Vector2 pos2) {
+        return new Vector2(pos1.x - pos2.x, pos1.y - pos2.y);
+    }
+
+    float Distance(Vector2 pos1, Vector2 pos2) {
+        return Mathf.Sqrt(Mathf.Pow(pos1.x - pos2.x, 2) + Mathf.Pow(pos1.y - pos2.y, 2));
     }
 
     float ModifyAngle(float angle) {
