@@ -13,8 +13,8 @@ TagManager:
   - UI
   - 
   - 
-  - BG
-  - Character
+  - 
+  - 
   - 
   - 
   - 
@@ -41,9 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: BG
-    uniqueID: 3950572817
+  - name: ground
+    uniqueID: 2653704573
     locked: 0
-  - name: Character
-    uniqueID: 3912909153
+  - name: player
+    uniqueID: 770969809
+    locked: 0
+  - name: workbench
+    uniqueID: 3388163781
     locked: 0

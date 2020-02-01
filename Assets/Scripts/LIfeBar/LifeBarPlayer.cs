@@ -21,10 +21,10 @@ public class LifeBarPlayer : MonoBehaviour
     private void SetUpMoveBoundaries()
     {
         Camera gameCamera = Camera.main;
-        xMin = gameCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).x + padding;
-        xMax = gameCamera.ViewportToWorldPoint(new Vector3(1, 0, 0)).x - padding;
-        yMin = gameCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y + padding;
-        yMax = gameCamera.ViewportToWorldPoint(new Vector3(0, 1, 0)).y - padding;
+        xMin = gameCamera.ViewportToWorldPoint(new Vector3(0, 0, -1)).x + padding;
+        xMax = gameCamera.ViewportToWorldPoint(new Vector3(1, 0, -1)).x - padding;
+        yMin = gameCamera.ViewportToWorldPoint(new Vector3(0, 0, -1)).y + padding;
+        yMax = gameCamera.ViewportToWorldPoint(new Vector3(0, 1, -1)).y - padding;
     }
 
 
@@ -41,6 +41,6 @@ public class LifeBarPlayer : MonoBehaviour
 
         var newXPos = Mathf.Clamp(transform.position.x + deltaX, xMin, xMax);
         var newYPos = Mathf.Clamp(transform.position.y + deltaY, yMin, yMax);
-        transform.position = new Vector2(newXPos, newYPos);
+        transform.position = new Vector3(newXPos, newYPos,-5);
     }
 }
