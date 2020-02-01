@@ -17,6 +17,10 @@ public class Cat : MonoBehaviour {
         正方向,
         負方向
     }
+    public enum RotationStatus {
+        逆時針,
+        順時針
+    }
     private Direction dir;
     private float upOrRightMaxValue;    //up and right
     private float downOrLeftMaxValue;    //down and left
@@ -32,6 +36,19 @@ public class Cat : MonoBehaviour {
     private float helloDestX;
     private float helloDestY;
 
+    private bool collide = false;
+
+    private GameObject perspectivePivot;
+    private float rotationSpeed = 0.1f;
+    private float rotationAngle = 0.0f;
+    private float originalAngle = 0.0f;
+    private RotationStatus rotationStatus = RotationStatus.逆時針;
+
+    void Start() {
+        perspectivePivot = transform.GetChild(0).gameObject;
+        perspectivePivot.SetActive(false);
+    }
+
     void Update() {
         if(hello) {
             if (helloDir == FourDirection.上) {
@@ -39,6 +56,7 @@ public class Cat : MonoBehaviour {
                 if (transform.localPosition.y >= helloDestY) {
                     hello = false;
                     start = true;
+                    perspectivePivot.SetActive(true);
                 }
             }
             else if (helloDir == FourDirection.下) {
@@ -46,6 +64,7 @@ public class Cat : MonoBehaviour {
                 if (transform.localPosition.y <= helloDestY) {
                     hello = false;
                     start = true;
+                    perspectivePivot.SetActive(true);
                 }
             }
             else if (helloDir == FourDirection.右) {
@@ -53,6 +72,7 @@ public class Cat : MonoBehaviour {
                 if (transform.localPosition.x >= helloDestX) {
                     hello = false;
                     start = true;
+                    perspectivePivot.SetActive(true);
                 }
             }
             else {
@@ -60,49 +80,88 @@ public class Cat : MonoBehaviour {
                 if (transform.localPosition.x <= helloDestX) {
                     hello = false;
                     start = true;
+                    perspectivePivot.SetActive(true);
                 }
             }
         }
         else if(start) {
             if(dir == Direction.上下) {
                 if(status == Status.正方向) {
-                    if(transform.localPosition.y <= upOrRightMaxValue - speed) {
+                    if(transform.localPosition.y <= upOrRightMaxValue - speed && !collide) {
                         transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + speed);
                     }
                     else {
                         status = Status.負方向;
-                        transform.localPosition = new Vector2(transform.localPosition.x, upOrRightMaxValue - speed + upOrRightMaxValue - transform.localPosition.y);
+                        originalAngle = -90.0f;
+                        rotationAngle += 180.0f;
+                        rotationAngle %= 360.0f;
+                        rotationAngle = ModifyAngle(rotationAngle);
+                        if(collide) {
+                            collide = false;
+                            transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - speed * 5);
+                        }
+                        else {
+                            transform.localPosition = new Vector2(transform.localPosition.x, upOrRightMaxValue - speed + upOrRightMaxValue - transform.localPosition.y);
+                        }
                     }
                 }
                 else {
-                    if (transform.localPosition.y >= downOrLeftMaxValue + speed) {
+                    if (transform.localPosition.y >= downOrLeftMaxValue + speed && !collide) {
                         transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - speed);
                     }
                     else {
                         status = Status.正方向;
-                        transform.localPosition = new Vector2(transform.localPosition.x, downOrLeftMaxValue + speed - transform.localPosition.y + downOrLeftMaxValue);
+                        originalAngle = 90.0f;
+                        rotationAngle -= 180.0f;
+                        rotationAngle %= 360.0f;
+                        rotationAngle = ModifyAngle(rotationAngle);
+                        if (collide) {
+                            collide = false;
+                            transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + speed * 5);
+                        }
+                        else {
+                            transform.localPosition = new Vector2(transform.localPosition.x, downOrLeftMaxValue + speed - transform.localPosition.y + downOrLeftMaxValue);
+                        }
                     }
                 }
             }
             else {
                 if (status == Status.正方向) {
-                    if (transform.localPosition.x <= upOrRightMaxValue - speed) {
-                        print("test2");
+                    if (transform.localPosition.x <= upOrRightMaxValue - speed && !collide) {
                         transform.localPosition = new Vector2(transform.localPosition.x + speed, transform.localPosition.y);
                     }
                     else {
                         status = Status.負方向;
-                        transform.localPosition = new Vector2(upOrRightMaxValue - speed + upOrRightMaxValue - transform.localPosition.x, transform.localPosition.y);
+                        originalAngle = 180.0f;
+                        rotationAngle += 180.0f;
+                        rotationAngle %= 360.0f;
+                        rotationAngle = ModifyAngle(rotationAngle);
+                        if (collide) {
+                            collide = false;
+                            transform.localPosition = new Vector2(transform.localPosition.x - speed * 5, transform.localPosition.y);
+                        }
+                        else {
+                            transform.localPosition = new Vector2(upOrRightMaxValue - speed + upOrRightMaxValue - transform.localPosition.x, transform.localPosition.y);
+                        }
                     }
                 }
                 else {
-                    if (transform.localPosition.x >= downOrLeftMaxValue + speed) {
-                        print("test");
+                    if (transform.localPosition.x >= downOrLeftMaxValue + speed && !collide) {
                         transform.localPosition = new Vector2(transform.localPosition.x - speed, transform.localPosition.y);
                     }
                     else {
                         status = Status.正方向;
-                        transform.localPosition = new Vector2(downOrLeftMaxValue + speed - transform.localPosition.x + downOrLeftMaxValue, transform.localPosition.y);
+                        originalAngle = 0.0f;
+                        rotationAngle += 180.0f;
+                        rotationAngle %= 360.0f;
+                        rotationAngle = ModifyAngle(rotationAngle);
+                        if (collide) {
+                            collide = false;
+                            transform.localPosition = new Vector2(transform.localPosition.x + speed * 5, transform.localPosition.y);
+                        }
+                        else {
+                            transform.localPosition = new Vector2(downOrLeftMaxValue + speed - transform.localPosition.x + downOrLeftMaxValue, transform.localPosition.y);
+                        }
                     }
                 }
             }
@@ -133,6 +192,31 @@ public class Cat : MonoBehaviour {
                 }
             }
         }
+
+
+        if(start) {
+            if (rotationStatus == RotationStatus.逆時針) {
+                if (rotationAngle + rotationSpeed > originalAngle + 45) {
+                    rotationStatus = RotationStatus.順時針;
+                }
+            }
+            else {
+                if (rotationAngle - rotationSpeed < originalAngle - 45) {
+                    rotationStatus = RotationStatus.逆時針;
+                }
+            }
+
+            rotationAngle = (rotationStatus == RotationStatus.逆時針) ? rotationAngle + rotationSpeed : rotationAngle - rotationSpeed;
+            rotationAngle = ModifyAngle(rotationAngle);
+            perspectivePivot.transform.localRotation = Quaternion.Euler(0, 0, rotationAngle);
+        }
+    }
+
+    float ModifyAngle(float angle) {
+        if(angle % 360 >= 270 && angle % 360 < 360) {
+            angle -= 360.0f;
+        }
+        return angle;
     }
 
     public void SetCat(Direction d, float p, float n, float speed, string name, float destX, float destY) {
@@ -142,6 +226,26 @@ public class Cat : MonoBehaviour {
         downOrLeftMaxValue = temp - n;
         this.speed = speed;
         status = (Random.Range(0, 2) == 0) ? Status.正方向 : Status.負方向;
+        if(d == Direction.上下) {
+            if (status == Status.正方向) {
+                originalAngle = 90.0f;
+                rotationAngle = 90.0f;
+            }
+            else {
+                originalAngle = -90.0f;
+                rotationAngle = -90.0f;
+            }
+        }
+        else {
+            if (status == Status.正方向) {
+                originalAngle = 0.0f;
+                rotationAngle = 0.0f;
+            }
+            else {
+                originalAngle = 180.0f;
+                rotationAngle = 180.0f;
+            }
+        }
         this.name = name;
         helloDestX = destX;
         helloDestY = destY;
@@ -157,7 +261,8 @@ public class Cat : MonoBehaviour {
 
     public void ByeCat() {
         start = false;
-        if(Mathf.Abs(transform.localPosition.x) >= Mathf.Abs(transform.localPosition.y)) {
+        perspectivePivot.SetActive(false);
+        if (Mathf.Abs(transform.localPosition.x) >= Mathf.Abs(transform.localPosition.y)) {
             byeDir = (transform.localPosition.x >= 0) ? FourDirection.右 : FourDirection.左;
         }
         else {
@@ -176,5 +281,11 @@ public class Cat : MonoBehaviour {
 
     public bool IsExisted() {
         return start || bye || hello;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if(start) {
+            collide = true;
+        }
     }
 }
