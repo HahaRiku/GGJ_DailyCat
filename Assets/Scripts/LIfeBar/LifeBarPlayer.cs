@@ -7,6 +7,8 @@ public class LifeBarPlayer : MonoBehaviour
     [SerializeField] float moveSpeed = 10f;
     [SerializeField] float padding = 1f;
 
+    Animator anim;
+
     //player moving range
     float xMin;
     float xMax;
@@ -16,6 +18,7 @@ public class LifeBarPlayer : MonoBehaviour
     void Start()
     {
         SetUpMoveBoundaries();
+        anim = GetComponent<Animator>();
     }
 
     private void SetUpMoveBoundaries()
@@ -32,6 +35,7 @@ public class LifeBarPlayer : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        
     }
 
     private void Move()
@@ -42,5 +46,28 @@ public class LifeBarPlayer : MonoBehaviour
         var newXPos = Mathf.Clamp(transform.position.x + deltaX, xMin, xMax);
         var newYPos = Mathf.Clamp(transform.position.y + deltaY, yMin, yMax);
         transform.position = new Vector2(newXPos, newYPos);
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+            anim.SetInteger("dir", 0);
+            anim.SetBool("isWalking", true);
+        }
+        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            anim.SetInteger("dir", 3);
+            anim.SetBool("isWalking", true);
+        }
+        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            anim.SetInteger("dir", 1);
+            anim.SetBool("isWalking", true);
+        }
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            anim.SetInteger("dir", 2);
+            anim.SetBool("isWalking", true);
+        }        
+        else{
+            anim.SetBool("isWalking", false);
+        }
     }
 }
