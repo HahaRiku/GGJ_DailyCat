@@ -121,24 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &227024512 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-    type: 3}
-  m_PrefabInstance: {fileID: 1240200957}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &227024513 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8669043399211156568, guid: c2f05bc4631e7864f8ffc52254e68135,
-    type: 3}
-  m_PrefabInstance: {fileID: 1240200957}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee007be0f4d9a2246bd674c1e7f6ccbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,7 +233,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1405994891}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &587544228
 BoxCollider2D:
@@ -279,90 +261,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1001 &1240200957
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1405994891}
-    m_Modifications:
-    - target: {fileID: 218632634510317500, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_Name
-      value: HealthBar
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.82
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634510317501, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 218632634699003279, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2267051302545631063, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4011954130753784457, guid: c2f05bc4631e7864f8ffc52254e68135,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c2f05bc4631e7864f8ffc52254e68135, type: 3}
 --- !u!1 &1405994889
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,8 +271,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1405994891}
   - component: {fileID: 1405994890}
-  - component: {fileID: 1405994892}
-  - component: {fileID: 1405994893}
   m_Layer: 0
   m_Name: Workbench
   m_TagString: Untagged
@@ -440,44 +336,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1405994889}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.96, y: 1.96, z: 0}
+  m_LocalPosition: {x: -5, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 227024512}
   - {fileID: 587544227}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &1405994892
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1405994889}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 1.5
---- !u!114 &1405994893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1405994889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcda806db6f44af4b9b249e4b3613705, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 227024513}
-  health: 100
 --- !u!1 &2043047190
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,6 +485,6 @@ Rigidbody2D:
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 4

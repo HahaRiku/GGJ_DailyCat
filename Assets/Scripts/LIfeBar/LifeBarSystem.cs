@@ -4,10 +4,10 @@ public class LifeBarSystem
     private float health;
     private float healthMax;
 
-    public LifeBarSystem(float healthMax)
+    public LifeBarSystem(float healthMax,float startHealth)
     {
         this.healthMax = healthMax;
-        health = healthMax;
+        health = startHealth;
     }
     public float GetHealth()
     {
