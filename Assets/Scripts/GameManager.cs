@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,13 +12,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float mainTimer;
     public GameObject Player1;
     public GameObject Player2;
-
-
-
+    public GameObject EndUI;
+    
     private float timer;
     private bool canCount = true;
     private bool doOnce = false;
     private bool EndGame = false;
+
    
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         Timer();
+        Restart();
 
     }
 
@@ -46,9 +48,21 @@ public class GameManager : MonoBehaviour
             doOnce = true;
             uitext.text = "0.0";
             timer = 0.0f;
+            EndUI.SetActive(true);
+            Time.timeScale = 0f;
             EndGame = true;
+            
         }
     }
+    private void Restart()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            canCount = true;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+    
 
 
 }

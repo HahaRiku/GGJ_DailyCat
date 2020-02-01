@@ -10,13 +10,13 @@ public class Pause : MonoBehaviour
     private static bool Ispause = false;
     void Start()
     {
-        
+        Ispause = false;
     }
    
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Ispause);
+        //Debug.Log(Ispause);
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Ispause)
