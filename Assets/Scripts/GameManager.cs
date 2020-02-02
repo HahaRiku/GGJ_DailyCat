@@ -9,11 +9,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<int> PlayerPoints = new List<int>();
     //[SerializeField] private float MaxTime;
     [SerializeField] private Text uitext;
+    [SerializeField] private Image uiimage1;
+    [SerializeField] private Image uiimage2;
     [SerializeField] private float mainTimer;
     public GameObject Player1;
     public GameObject Player2;
     public GameObject EndUI;
-    
+    public Sprite[] numbers;
+
     private float timer;
     private bool canCount = true;
     private bool doOnce = false;
@@ -40,6 +43,9 @@ public class GameManager : MonoBehaviour
         {
             timer -= Time.deltaTime;
             uitext.text = timer.ToString("F");
+            uiimage1.sprite = numbers[(int)timer%10];
+            uiimage2.sprite = numbers[(int)timer/10];
+
 
         }
         else if (timer <= 0.0f && !doOnce)
