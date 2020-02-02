@@ -48,6 +48,7 @@ public class Cat : MonoBehaviour {
 
     private GameManager GM;
     private GameObject Player;
+    private Player playerComp;
     private float perspectiveRadius = 2.5f;
 
     private Animator ani;
@@ -75,6 +76,7 @@ public class Cat : MonoBehaviour {
         emotionPivot = transform.GetChild(1).gameObject;
         emotionSR = emotionPivot.transform.GetChild(0).GetComponent<SpriteRenderer>();
         emotionAni = emotionPivot.GetComponent<Animator>();
+        playerComp = Player.GetComponent<Player>();
     }
 
     void Update() {
@@ -479,8 +481,8 @@ public class Cat : MonoBehaviour {
             ResetRotation();
             goBack = true;
             attackPlayer = false;
-            
-            //玩家倒地
+
+            playerComp.PlayerFallDown();
 
             StartCoroutine(GoBack());
         }
