@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LifeBarPlayer : MonoBehaviour
 {
+    Animator anim;
     [SerializeField] float moveSpeed = 10f;
     [SerializeField] float padding = 1f;
 
@@ -16,6 +17,7 @@ public class LifeBarPlayer : MonoBehaviour
     void Start()
     {
         SetUpMoveBoundaries();
+        anim = GetComponent<Animator>();
     }
 
     private void SetUpMoveBoundaries()
@@ -29,7 +31,7 @@ public class LifeBarPlayer : MonoBehaviour
 
 
     // Update is called once per frame
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         Move();
     }
@@ -41,6 +43,32 @@ public class LifeBarPlayer : MonoBehaviour
 
         var newXPos = Mathf.Clamp(transform.position.x + deltaX, xMin, xMax);
         var newYPos = Mathf.Clamp(transform.position.y + deltaY, yMin, yMax);
-        transform.position = new Vector2(newXPos, newYPos);
+        transform.position = new Vector3(newXPos, newYPos,-3);
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            anim.SetInteger("dir", 3);
+            anim.SetBool("isWalking", true);
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            anim.SetInteger("dir", 0);
+            anim.SetBool("isWalking", true);
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            anim.SetInteger("dir", 2);
+            anim.SetBool("isWalking", true);
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            anim.SetInteger("dir", 1);
+            anim.SetBool("isWalking", true);
+        }
+        else
+        {
+            anim.SetBool("isWalking", false);
+        }
+        //if(Input)
     }
 }
