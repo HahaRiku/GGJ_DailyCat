@@ -14,7 +14,7 @@ public class CatDetect : MonoBehaviour {
             cat.DetectPlayer(collision.gameObject);
         }
         else if(collision.gameObject.name == "HealthBar Collision") {
-            cat.DetectWorkTable(collision.gameObject);
+            cat.DetectWorkTable(collision.gameObject.transform.parent.parent.parent.gameObject);
         }
     }
 

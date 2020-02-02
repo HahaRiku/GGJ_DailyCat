@@ -68,6 +68,9 @@ public class Cat : MonoBehaviour {
 
     private Coroutine angryStatusInstance;
 
+    private bool detectWorkTable = false;
+    private GameObject detectWorkTableObj;
+
     void OnEnable() {
         ani = GetComponent<Animator>();
     }
@@ -325,8 +328,10 @@ public class Cat : MonoBehaviour {
             }
 
             //detect work table
-            if (true) {
-
+            if (detectWorkTable) {
+                detectWorkTable = false;
+                start = false;
+                perspectivePivot.SetActive(false);
             }
 
             //release cat
@@ -564,9 +569,35 @@ public class Cat : MonoBehaviour {
     }
 
     public void DetectWorkTable(GameObject workTable) {
-        if(true/*player is work on work table*/) {
-
+        if(workTable == playerComp.GetnowWorkbench()) {
+            detectWorkTable = true;
+            detectWorkTableObj = workTable;
         }
+    }
+
+    private IEnumerator AttackTable() {
+        Vector2 catPos = transform.localPosition;
+        Vector2 tablePos = detectWorkTableObj.transform.localPosition;
+        float distanceX = tablePos.x - catPos.x;
+        float distanceY = tablePos.y - catPos.y;
+        if (distanceX > 0) {
+            transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+        }
+        float deltaX = distanceX / 60.0f;
+        float deltaY = distanceY / 60.0f;
+
+        for (float i = catPos.x, j = catPos.y, k = 0; k < 60; i += deltaX, j += deltaY, k++) {
+            transform.localPosition = new Vector2(i, j);
+            yield return new WaitForSeconds(1 / 60);
+        }
+        ani.SetTrigger("AttackTable");
+        yield return new WaitForSeconds(40/60);
+        playerComp.DealnowWorkbenchDamage(50);
+        emotionSR.sprite = loveEmotion;
+        StartCoroutine(EmotionShowUpAndDisappear());
+
+        goBack = true;
+        StartCoroutine(GoBack());
     }
 
     private IEnumerator AngryStatus() {
