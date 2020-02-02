@@ -456,9 +456,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c17e51f9be39c2b4f98ffc5e9b55ddd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 318305827}
-  antique: {fileID: 2452547969224081771, guid: 8126d7702826c804cb5fda45fd35a278, type: 3}
-  timeToReCreate: 5
 --- !u!4 &334379553
 Transform:
   m_ObjectHideFlags: 0
@@ -3132,6 +3129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 575531360}
   - component: {fileID: 575531359}
+  - component: {fileID: 575531361}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3153,10 +3151,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPoints: 
   uitext: {fileID: 1518473767}
+  uiimage1: {fileID: 0}
+  uiimage2: {fileID: 0}
+  uiimage3: {fileID: 0}
+  uiimage4: {fileID: 0}
+  scoreText: {fileID: 0}
+  antique: {fileID: 0}
+  timeToReCreate: 5
   mainTimer: 20
   Player1: {fileID: 0}
   Player2: {fileID: 0}
   EndUI: {fileID: 1054169508}
+  numbers: []
 --- !u!4 &575531360
 Transform:
   m_ObjectHideFlags: 0
@@ -3171,6 +3177,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &575531361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575531358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b63111c10deef40bf66eca3daaf5ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMove: {fileID: 2043047191}
 --- !u!1 &667056992
 GameObject:
   m_ObjectHideFlags: 0
@@ -3830,7 +3849,6 @@ GameObject:
   m_Component:
   - component: {fileID: 976021746}
   - component: {fileID: 976021745}
-  - component: {fileID: 976021744}
   m_Layer: 0
   m_Name: AirConsole
   m_TagString: Untagged
@@ -3838,19 +3856,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &976021744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 976021743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5b63111c10deef40bf66eca3daaf5ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerMove: {fileID: 2043047191}
 --- !u!114 &976021745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5537,7 +5542,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -906803515
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -3318890645509679906, guid: 441c650cee032364ea961900881d6afa,
     type: 3}
