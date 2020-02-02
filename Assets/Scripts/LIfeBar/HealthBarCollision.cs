@@ -25,6 +25,9 @@ public class HealthBarCollision : MonoBehaviour
         healthBar.Setup(lifeBarSystem);
     }
 
+    public HealthBar GethealthBar() { 
+        return healthBar;
+    }
 
 
     // Update is called once per frame
@@ -37,7 +40,6 @@ public class HealthBarCollision : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Z))
         {
-            //healthBar.getLifeBarSystem().Damage((float)lifeDamage * Time.deltaTime);
             healthBar.getLifeBarSystem().Heal((float)lifeHeal * Time.deltaTime);
         }
                   

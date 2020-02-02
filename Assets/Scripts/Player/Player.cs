@@ -28,7 +28,11 @@ public class Player : MonoBehaviour
     private bool isFallDown = false;
     private bool isWorking = false;
     private bool canWorking = false;
+    private bool canAttack = false;
     // Start is called before the first frame update
+
+    private GameObject nowWorkbench = null;
+    private HealthBar nowHealBar = null;
     void Start()
     {
         SetUpMoveBoundaries();
@@ -48,7 +52,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //Debug.Log(isWorking);
+        if(nowWorkbench != null)
+        {
+            Debug.Log(nowWorkbench.transform.position.x);
+        }
+        
         if (!isFallDown)
         {
             Move();
@@ -252,6 +260,7 @@ public class Player : MonoBehaviour
     {
         if (!isFallDown)
         {
+            canAttack = true;
             isFallDown = true;
             anim.SetBool("isWalking", false);
             anim.SetBool("isFallDown", true);
@@ -259,6 +268,7 @@ public class Player : MonoBehaviour
             anim.SetBool("isWalking", false);
             anim.SetBool("isFallDown", false);
             SetPLayerFilpX(4);
+            canAttack = false;
             isFallDown = false;
         }            
     }
@@ -297,15 +307,37 @@ public class Player : MonoBehaviour
         if (collision.gameObject.tag == "antique")
         {
             canWorking = true;
+            nowWorkbench = collision.gameObject.transform.parent.gameObject.transform.parent.gameObject;
+            nowHealBar = collision.gameObject.GetComponent<HealthBarCollision>().GethealthBar();
+            if (canAttack)
+            {
+                collision.gameObject.GetComponent<HealthBarCollision>().GethealthBar().getLifeBarSystem().Damage(60);
+                canAttack = false;
+            }
         }
         
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log(collision.gameObject.tag);
+        //Debug.Log(collision.gameObject.tag);        
+        nowWorkbench = null;
+        nowHealBar = null;
         if (collision.gameObject.tag == "antique")
         {
             canWorking = false;
         }           
     }
+
+    public GameObject GetnowWorkbench()
+    {
+        return nowWorkbench;
+    }
+    public void DealnowWorkbenchDamage(int damage)
+    {
+        if(nowHealBar != null)
+        {
+            nowHealBar.getLifeBarSystem().Damage(damage);
+        }        
+    }
+
 }
