@@ -66,6 +66,8 @@ public class Cat : MonoBehaviour {
 
     private bool checkPlayerDodge = false;
 
+    private Coroutine angryStatusInstance;
+
     void OnEnable() {
         ani = GetComponent<Animator>();
     }
@@ -101,7 +103,7 @@ public class Cat : MonoBehaviour {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
-                    StartCoroutine(AngryStatus());
+                    angryStatusInstance = StartCoroutine(AngryStatus());
                 }
             }
             else if (helloDir == FourDirection.下) {
@@ -122,7 +124,7 @@ public class Cat : MonoBehaviour {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
-                    StartCoroutine(AngryStatus());
+                    angryStatusInstance = StartCoroutine(AngryStatus());
                 }
             }
             else if (helloDir == FourDirection.右) {
@@ -143,7 +145,7 @@ public class Cat : MonoBehaviour {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
-                    StartCoroutine(AngryStatus());
+                    angryStatusInstance = StartCoroutine(AngryStatus());
                 }
             }
             else {
@@ -164,7 +166,7 @@ public class Cat : MonoBehaviour {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
-                    StartCoroutine(AngryStatus());
+                    angryStatusInstance = StartCoroutine(AngryStatus());
                 }
             }
         }
@@ -585,10 +587,10 @@ public class Cat : MonoBehaviour {
 
     public void ReleaseCat() {
         emotionAni.SetTrigger("Disappear");
-        StopCoroutine(AngryStatus());
+        StopCoroutine(angryStatusInstance);
         emotionSR.sprite = loveEmotion;
         StartCoroutine(EmotionShowUpAndDisappear());
         angry = false;
-        StartCoroutine(AngryStatus());
+        angryStatusInstance = StartCoroutine(AngryStatus());
     }
 }
