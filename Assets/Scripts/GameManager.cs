@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     private float timer;
     private bool canCount = true;
     private bool doOnce = false;
-    private bool EndGame = false;
+    public bool EndGame = false;
 
     //private void Awake()
     //{

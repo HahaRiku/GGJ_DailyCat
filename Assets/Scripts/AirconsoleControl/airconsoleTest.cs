@@ -9,11 +9,16 @@ public class airconsoleTest : MonoBehaviour
     [SerializeField] private List<AirconsolePlayer> playerCon=new List<AirconsolePlayer>();
 
     private int DeviceCount = 0;
-    void Start()
+    void Awake()
     {
         AirConsole.instance.onMessage += OnMessage;
         AirConsole.instance.onReady += OnReady;
         AirConsole.instance.onConnect += OnConnect;
+        List<int> connectedDevices = AirConsole.instance.GetControllerDeviceIds();
+        foreach (int deviceID in connectedDevices)
+        {
+            AddNewPlayer(deviceID);
+        }
     }
 
     void OnReady(string code)

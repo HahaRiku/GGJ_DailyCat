@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cat : MonoBehaviour {
-    public enum Direction {
+public class Cat : MonoBehaviour
+{
+    public enum Direction
+    {
         上下,
         左右
     }
-    public enum FourDirection {
+    public enum FourDirection
+    {
         上,
         下,
         左,
         右
     }
-    public enum Status {
+    public enum Status
+    {
         正方向,
         負方向
     }
-    public enum RotationStatus {
+    public enum RotationStatus
+    {
         逆時針,
         順時針
     }
@@ -47,8 +52,10 @@ public class Cat : MonoBehaviour {
     private RotationStatus rotationStatus = RotationStatus.逆時針;
 
     private GameManager GM;
-    private GameObject Player;
-    private Player playerComp;
+    private GameObject Player1;
+    private GameObject Player2;
+    private Player player1Comp;
+    private Player player2Comp;
     private float perspectiveRadius = 2.5f;
 
     private Animator ani;
@@ -68,104 +75,131 @@ public class Cat : MonoBehaviour {
 
     private Coroutine angryStatusInstance;
 
-    private bool detectWorkTable = false;
-    private GameObject detectWorkTableObj;
-
-    void OnEnable() {
+    void OnEnable()
+    {
         ani = GetComponent<Animator>();
     }
 
-    void Start() {
+    void Start()
+    {
         perspectivePivot = transform.GetChild(0).gameObject;
         perspectivePivot.SetActive(false);
         GM = FindObjectOfType<GameManager>();
-        Player = FindObjectOfType<Player>().gameObject;
+        Player1 = GM.Player1;
+        Player2 = GM.Player2;
         emotionPivot = transform.GetChild(1).gameObject;
         emotionSR = emotionPivot.transform.GetChild(0).GetComponent<SpriteRenderer>();
         emotionAni = emotionPivot.GetComponent<Animator>();
-        playerComp = Player.GetComponent<Player>();
+        player1Comp = Player1.GetComponent<Player>();
+        player2Comp = Player2.GetComponent<Player>();
     }
 
-    void Update() {
-        if (hello) {
-            if (helloDir == FourDirection.上) {
+    void Update()
+    {
+        if (hello)
+        {
+            if (helloDir == FourDirection.上)
+            {
                 transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + speed * 5);
-                if (transform.localPosition.y >= helloDestY) {
+                if (transform.localPosition.y >= helloDestY)
+                {
                     hello = false;
                     start = true;
-                    if (dir == Direction.上下 && status == Status.正方向) {
+                    if (dir == Direction.上下 && status == Status.正方向)
+                    {
                         ani.SetTrigger("WalkUp");
                     }
-                    else if (dir == Direction.上下 && status == Status.負方向) {
+                    else if (dir == Direction.上下 && status == Status.負方向)
+                    {
                         ani.SetTrigger("WalkDown");
                     }
-                    else if (dir == Direction.左右 && status == Status.負方向) {
+                    else if (dir == Direction.左右 && status == Status.負方向)
+                    {
                         ani.SetTrigger("WalkLeft");
                     }
-                    else {
+                    else
+                    {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
                     angryStatusInstance = StartCoroutine(AngryStatus());
                 }
             }
-            else if (helloDir == FourDirection.下) {
+            else if (helloDir == FourDirection.下)
+            {
                 transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - speed * 5);
-                if (transform.localPosition.y <= helloDestY) {
+                if (transform.localPosition.y <= helloDestY)
+                {
                     hello = false;
                     start = true;
-                    if (dir == Direction.上下 && status == Status.正方向) {
+                    if (dir == Direction.上下 && status == Status.正方向)
+                    {
                         ani.SetTrigger("WalkUp");
                     }
-                    else if (dir == Direction.上下 && status == Status.負方向) {
+                    else if (dir == Direction.上下 && status == Status.負方向)
+                    {
                         ani.SetTrigger("WalkDown");
                     }
-                    else if (dir == Direction.左右 && status == Status.負方向) {
+                    else if (dir == Direction.左右 && status == Status.負方向)
+                    {
                         ani.SetTrigger("WalkLeft");
                     }
-                    else {
+                    else
+                    {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
                     angryStatusInstance = StartCoroutine(AngryStatus());
                 }
             }
-            else if (helloDir == FourDirection.右) {
+            else if (helloDir == FourDirection.右)
+            {
                 transform.localPosition = new Vector2(transform.localPosition.x + speed * 5, transform.localPosition.y);
-                if (transform.localPosition.x >= helloDestX) {
+                if (transform.localPosition.x >= helloDestX)
+                {
                     hello = false;
                     start = true;
-                    if (dir == Direction.上下 && status == Status.正方向) {
+                    if (dir == Direction.上下 && status == Status.正方向)
+                    {
                         ani.SetTrigger("WalkUp");
                     }
-                    else if (dir == Direction.上下 && status == Status.負方向) {
+                    else if (dir == Direction.上下 && status == Status.負方向)
+                    {
                         ani.SetTrigger("WalkDown");
                     }
-                    else if (dir == Direction.左右 && status == Status.負方向) {
+                    else if (dir == Direction.左右 && status == Status.負方向)
+                    {
                         ani.SetTrigger("WalkLeft");
                     }
-                    else {
+                    else
+                    {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
                     angryStatusInstance = StartCoroutine(AngryStatus());
                 }
             }
-            else {
+            else
+            {
                 transform.localPosition = new Vector2(transform.localPosition.x - speed * 5, transform.localPosition.y);
-                if (transform.localPosition.x <= helloDestX) {
+                if (transform.localPosition.x <= helloDestX)
+                {
                     hello = false;
                     start = true;
-                    if (dir == Direction.上下 && status == Status.正方向) {
+                    if (dir == Direction.上下 && status == Status.正方向)
+                    {
                         ani.SetTrigger("WalkUp");
                     }
-                    else if (dir == Direction.上下 && status == Status.負方向) {
+                    else if (dir == Direction.上下 && status == Status.負方向)
+                    {
                         ani.SetTrigger("WalkDown");
                     }
-                    else if (dir == Direction.左右 && status == Status.負方向) {
+                    else if (dir == Direction.左右 && status == Status.負方向)
+                    {
                         ani.SetTrigger("WalkLeft");
                     }
-                    else {
+                    else
+                    {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
@@ -173,128 +207,165 @@ public class Cat : MonoBehaviour {
                 }
             }
         }
-        else if (start) {
-            if (dir == Direction.上下) {
-                if (status == Status.正方向) {
-                    if (transform.localPosition.y <= upOrRightMaxValue - speed && !collide) {
+        else if (start)
+        {
+            if (dir == Direction.上下)
+            {
+                if (status == Status.正方向)
+                {
+                    if (transform.localPosition.y <= upOrRightMaxValue - speed && !collide)
+                    {
                         transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + speed);
                     }
-                    else {
+                    else
+                    {
                         status = Status.負方向;
                         ani.SetTrigger("WalkDown");
                         originalAngle = -90.0f;
                         rotationAngle += 180.0f;
                         rotationAngle %= 360.0f;
                         rotationAngle = ModifyAngle(rotationAngle);
-                        if (collide) {
+                        if (collide)
+                        {
                             collide = false;
                             transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - speed * 5);
                         }
-                        else {
+                        else
+                        {
                             transform.localPosition = new Vector2(transform.localPosition.x, upOrRightMaxValue - speed + upOrRightMaxValue - transform.localPosition.y);
                         }
                     }
                 }
-                else {
-                    if (transform.localPosition.y >= downOrLeftMaxValue + speed && !collide) {
+                else
+                {
+                    if (transform.localPosition.y >= downOrLeftMaxValue + speed && !collide)
+                    {
                         transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - speed);
                     }
-                    else {
+                    else
+                    {
                         status = Status.正方向;
                         ani.SetTrigger("WalkUp");
                         originalAngle = 90.0f;
                         rotationAngle -= 180.0f;
                         rotationAngle %= 360.0f;
                         rotationAngle = ModifyAngle(rotationAngle);
-                        if (collide) {
+                        if (collide)
+                        {
                             collide = false;
                             transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + speed * 5);
                         }
-                        else {
+                        else
+                        {
                             transform.localPosition = new Vector2(transform.localPosition.x, downOrLeftMaxValue + speed - transform.localPosition.y + downOrLeftMaxValue);
                         }
                     }
                 }
             }
-            else {
-                if (status == Status.正方向) {
-                    if (transform.localPosition.x <= upOrRightMaxValue - speed && !collide) {
+            else
+            {
+                if (status == Status.正方向)
+                {
+                    if (transform.localPosition.x <= upOrRightMaxValue - speed && !collide)
+                    {
                         transform.localPosition = new Vector2(transform.localPosition.x + speed, transform.localPosition.y);
                     }
-                    else {
+                    else
+                    {
                         status = Status.負方向;
                         ani.SetTrigger("WalkLeft");
                         originalAngle = 180.0f;
                         rotationAngle += 180.0f;
                         rotationAngle %= 360.0f;
                         rotationAngle = ModifyAngle(rotationAngle);
-                        if (collide) {
+                        if (collide)
+                        {
                             collide = false;
                             transform.localPosition = new Vector2(transform.localPosition.x - speed * 5, transform.localPosition.y);
                         }
-                        else {
+                        else
+                        {
                             transform.localPosition = new Vector2(upOrRightMaxValue - speed + upOrRightMaxValue - transform.localPosition.x, transform.localPosition.y);
                         }
                     }
                 }
-                else {
-                    if (transform.localPosition.x >= downOrLeftMaxValue + speed && !collide) {
+                else
+                {
+                    if (transform.localPosition.x >= downOrLeftMaxValue + speed && !collide)
+                    {
                         transform.localPosition = new Vector2(transform.localPosition.x - speed, transform.localPosition.y);
                     }
-                    else {
+                    else
+                    {
                         status = Status.正方向;
                         ani.SetTrigger("WalkRight");
                         originalAngle = 0.0f;
                         rotationAngle += 180.0f;
                         rotationAngle %= 360.0f;
                         rotationAngle = ModifyAngle(rotationAngle);
-                        if (collide) {
+                        if (collide)
+                        {
                             collide = false;
                             transform.localPosition = new Vector2(transform.localPosition.x + speed * 5, transform.localPosition.y);
                         }
-                        else {
+                        else
+                        {
                             transform.localPosition = new Vector2(downOrLeftMaxValue + speed - transform.localPosition.x + downOrLeftMaxValue, transform.localPosition.y);
                         }
                     }
                 }
             }
         }
-        else if (bye) {
-            if (byeDir == FourDirection.上) {
+        else if (bye)
+        {
+            if (byeDir == FourDirection.上)
+            {
                 transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + speed * 5);
-                if (transform.localPosition.y >= 6) {
+                if (transform.localPosition.y >= 6)
+                {
                     bye = false;
                 }
             }
-            else if (byeDir == FourDirection.下) {
+            else if (byeDir == FourDirection.下)
+            {
                 transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - speed * 5);
-                if (transform.localPosition.y <= -8) {
+                if (transform.localPosition.y <= -8)
+                {
                     bye = false;
                 }
             }
-            else if (byeDir == FourDirection.右) {
+            else if (byeDir == FourDirection.右)
+            {
                 transform.localPosition = new Vector2(transform.localPosition.x + speed * 5, transform.localPosition.y);
-                if (transform.localPosition.x >= 15) {
+                if (transform.localPosition.x >= 15)
+                {
                     bye = false;
                 }
             }
-            else {
+            else
+            {
                 transform.localPosition = new Vector2(transform.localPosition.x - speed * 5, transform.localPosition.y);
-                if (transform.localPosition.x <= -15) {
+                if (transform.localPosition.x <= -15)
+                {
                     bye = false;
                 }
             }
         }
 
-        if (start) {
+        if (start)
+        {
             //perspective rotation
-            if (rotationStatus == RotationStatus.逆時針) {
-                if (rotationAngle + rotationSpeed > originalAngle + 45) {
+            if (rotationStatus == RotationStatus.逆時針)
+            {
+                if (rotationAngle + rotationSpeed > originalAngle + 45)
+                {
                     rotationStatus = RotationStatus.順時針;
                 }
             }
-            else {
-                if (rotationAngle - rotationSpeed < originalAngle - 45) {
+            else
+            {
+                if (rotationAngle - rotationSpeed < originalAngle - 45)
+                {
                     rotationStatus = RotationStatus.逆時針;
                 }
             }
@@ -315,10 +386,12 @@ public class Cat : MonoBehaviour {
                 perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
             }*/
 
-            if (!detectPlayer) {
+            if (!detectPlayer)
+            {
                 perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = yelloLight;
             }
-            else {
+            else
+            {
                 detectPlayer = false;
                 perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = redLight;
                 ani.SetTrigger("Stop");
@@ -328,61 +401,74 @@ public class Cat : MonoBehaviour {
             }
 
             //detect work table
-            if (detectWorkTable) {
-                detectWorkTable = false;
-                start = false;
-                perspectivePivot.SetActive(false);
+            if (true)
+            {
+
             }
 
             //release cat
-            if(Distance(transform.localPosition, Player.transform.localPosition) < 2 && Input.GetKeyDown(KeyCode.R)) {
+            if (Distance(transform.localPosition, Player1.transform.localPosition) < 2
+                || Distance(transform.localPosition, Player2.transform.localPosition) < 2 && Input.GetKeyDown(KeyCode.R))
+            {
                 ReleaseCat();
             }
         }
     }
 
-    float Dot(Vector2 v1, Vector2 v2) {
+    float Dot(Vector2 v1, Vector2 v2)
+    {
         return v1.x * v2.x + v1.y * v2.y;
     }
 
-    Vector2 GetVector(Vector2 pos1, Vector2 pos2) {
+    Vector2 GetVector(Vector2 pos1, Vector2 pos2)
+    {
         return new Vector2(pos1.x - pos2.x, pos1.y - pos2.y);
     }
 
-    float Distance(Vector2 pos1, Vector2 pos2) {
+    float Distance(Vector2 pos1, Vector2 pos2)
+    {
         return Mathf.Sqrt(Mathf.Pow(pos1.x - pos2.x, 2) + Mathf.Pow(pos1.y - pos2.y, 2));
     }
 
-    float ModifyAngle(float angle) {
-        if(angle % 360 >= 270 && angle % 360 < 360) {
+    float ModifyAngle(float angle)
+    {
+        if (angle % 360 >= 270 && angle % 360 < 360)
+        {
             angle -= 360.0f;
         }
         return angle;
     }
 
-    public void SetCat(Direction d, float p, float n, float speed, string name, float destX, float destY) {
+    public void SetCat(Direction d, float p, float n, float speed, string name, float destX, float destY)
+    {
         dir = d;
         float temp = ((d == Direction.上下) ? destY : destX);
         upOrRightMaxValue = temp + p;
         downOrLeftMaxValue = temp - n;
         this.speed = speed;
         status = (Random.Range(0, 2) == 0) ? Status.正方向 : Status.負方向;
-        if(d == Direction.上下) {
-            if (status == Status.正方向) {
+        if (d == Direction.上下)
+        {
+            if (status == Status.正方向)
+            {
                 originalAngle = 90.0f;
                 rotationAngle = 90.0f;
             }
-            else {
+            else
+            {
                 originalAngle = -90.0f;
                 rotationAngle = -90.0f;
             }
         }
-        else {
-            if (status == Status.正方向) {
+        else
+        {
+            if (status == Status.正方向)
+            {
                 originalAngle = 0.0f;
                 rotationAngle = 0.0f;
             }
-            else {
+            else
+            {
                 originalAngle = 180.0f;
                 rotationAngle = 180.0f;
             }
@@ -390,103 +476,128 @@ public class Cat : MonoBehaviour {
         this.name = name;
         helloDestX = destX;
         helloDestY = destY;
-        if (Mathf.Abs(helloDestX) >= Mathf.Abs(helloDestY)) {
+        if (Mathf.Abs(helloDestX) >= Mathf.Abs(helloDestY))
+        {
             helloDir = (helloDestX >= 0) ? FourDirection.左 : FourDirection.右;
             transform.localPosition = (helloDestX >= 0) ? new Vector2(15, destY) : new Vector2(-15, destY);
         }
-        else {
+        else
+        {
             helloDir = (helloDestY >= 0) ? FourDirection.下 : FourDirection.上;
             transform.localPosition = (helloDestY >= 0) ? new Vector2(destX, 6) : new Vector2(destX, -8);
         }
     }
 
-    public void ByeCat() {
+    public void ByeCat()
+    {
         start = false;
         perspectivePivot.SetActive(false);
-        if (Mathf.Abs(transform.localPosition.x) >= Mathf.Abs(transform.localPosition.y)) {
+        if (Mathf.Abs(transform.localPosition.x) >= Mathf.Abs(transform.localPosition.y))
+        {
             byeDir = (transform.localPosition.x >= 0) ? FourDirection.右 : FourDirection.左;
         }
-        else {
+        else
+        {
             byeDir = (transform.localPosition.y >= 0) ? FourDirection.上 : FourDirection.下;
         }
         bye = true;
-        if (byeDir == FourDirection.上) {
+        if (byeDir == FourDirection.上)
+        {
             ani.SetTrigger("WalkUp");
         }
-        else if (byeDir == FourDirection.下) {
+        else if (byeDir == FourDirection.下)
+        {
             ani.SetTrigger("WalkDown");
         }
-        else if (byeDir == FourDirection.左) {
+        else if (byeDir == FourDirection.左)
+        {
             ani.SetTrigger("WalkLeft");
         }
-        else {
+        else
+        {
             ani.SetTrigger("WalkRight");
         }
     }
 
-    public void HelloCat() {
+    public void HelloCat()
+    {
         hello = true;
-        if(ani == null) {
+        if (ani == null)
+        {
             ani = GetComponent<Animator>();
         }
-        if(helloDir == FourDirection.上) {
+        if (helloDir == FourDirection.上)
+        {
             ani.SetTrigger("WalkUp");
         }
-        else if(helloDir == FourDirection.下) {
+        else if (helloDir == FourDirection.下)
+        {
             ani.SetTrigger("WalkDown");
         }
-        else if(helloDir == FourDirection.左) {
+        else if (helloDir == FourDirection.左)
+        {
             ani.SetTrigger("WalkLeft");
         }
-        else {
+        else
+        {
             ani.SetTrigger("WalkRight");
         }
     }
 
-    public bool IsIdle() {
+    public bool IsIdle()
+    {
         return start;
     }
 
-    public bool IsExisted() {
+    public bool IsExisted()
+    {
         return start || bye || hello || attackPlayer || goBack;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if(start) {
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (start)
+        {
             collide = true;
         }
     }
 
-    public void DetectPlayer(GameObject player) {
-        if(start && angry) {
+    public void DetectPlayer(GameObject player)
+    {
+        if (start && angry)
+        {
             detectPlayer = true;
             detectPlayerObj = player;
         }
     }
 
-    private IEnumerator AttackPlayer() {
+    private IEnumerator AttackPlayer()
+    {
         yield return new WaitForSeconds(3.0f);
         ani.SetTrigger("AttackPlayer");
         Vector2 catPos = transform.localPosition;
         Vector2 playerPos = detectPlayerObj.transform.localPosition;
         float distanceX = playerPos.x - catPos.x;
         float distanceY = playerPos.y - catPos.y;
-        if(distanceX > 0) {
+        if (distanceX > 0)
+        {
             transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
         }
         float deltaX = distanceX / 50.0f;
         float deltaY = distanceY / 50.0f;
         attackPlayer = true;
-        
-        for (float i = catPos.x, j = catPos.y, k = 0; k < 50; i += deltaX, j += deltaY, k++) {
+
+        for (float i = catPos.x, j = catPos.y, k = 0; k < 50; i += deltaX, j += deltaY, k++)
+        {
             transform.localPosition = new Vector2(i, j);
-            yield return new WaitForSeconds(1/60);
+            yield return new WaitForSeconds(1 / 60);
         }
         checkPlayerDodge = true;
-        StartCoroutine(CheckPlayerDodge());
+        StartCoroutine(CheckPlayerDodge(detectPlayerObj));
         yield return new WaitForSeconds(2.0f);
         checkPlayerDodge = false;
-        if(attackPlayer) {
+        if (attackPlayer)
+        {
             ResetRotation();
             goBack = true;
             attackPlayer = false;
@@ -494,20 +605,20 @@ public class Cat : MonoBehaviour {
         }
     }
 
-    private IEnumerator CheckPlayerDodge() {
-        while(true) {
+    private IEnumerator CheckPlayerDodge(GameObject player)
+    {
+        while (true)
+        {
             if (!checkPlayerDodge) break;
-            else if(Distance(transform.localPosition, Player.transform.localPosition) < 2) {
+            else if (Distance(transform.localPosition, player.transform.localPosition) < 2)
+            {
                 checkPlayerDodge = false;
                 ResetRotation();
                 goBack = true;
                 attackPlayer = false;
-                if (playerComp == null) {
-                    playerComp = Player.GetComponent<Player>();
-                }
+                Player playerComp = player.GetComponent<Player>();
                 playerComp.PlayerFallDown();
                 print("test2");
-
                 StartCoroutine(GoBack());
                 break;
             }
@@ -515,13 +626,16 @@ public class Cat : MonoBehaviour {
         }
     }
 
-    private void ResetRotation() {
-        if(transform.localScale.x < 0) {
+    private void ResetRotation()
+    {
+        if (transform.localScale.x < 0)
+        {
             transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
         }
     }
 
-    private IEnumerator GoBack() {
+    private IEnumerator GoBack()
+    {
         emotionSR.sprite = loveEmotion;
         StartCoroutine(EmotionShowUpAndDisappear());
         Vector2 catPos = transform.localPosition;
@@ -529,78 +643,66 @@ public class Cat : MonoBehaviour {
         float distanceY = helloDestY - catPos.y;
         float deltaX = distanceX / 50.0f;
         float deltaY = distanceY / 50.0f;
-        if(Mathf.Abs(distanceX) >= Mathf.Abs(distanceY)) {
-            if(distanceX >= 0) {
+        if (Mathf.Abs(distanceX) >= Mathf.Abs(distanceY))
+        {
+            if (distanceX >= 0)
+            {
                 ani.SetTrigger("WalkRight");
             }
-            else {
+            else
+            {
                 ani.SetTrigger("WalkLeft");
             }
         }
-        else {
-            if(distanceY >= 0) {
+        else
+        {
+            if (distanceY >= 0)
+            {
                 ani.SetTrigger("WalkUp");
             }
-            else {
+            else
+            {
                 ani.SetTrigger("WalkDown");
             }
         }
-        for(float i = catPos.x, j = catPos.y, k =0; k<50; i+=deltaX, j +=deltaY, k++) {
+        for (float i = catPos.x, j = catPos.y, k = 0; k < 50; i += deltaX, j += deltaY, k++)
+        {
             transform.localPosition = new Vector2(i, j);
             yield return new WaitForSeconds(0.1f);
         }
         yield return new WaitForSeconds(0.5f);
         perspectivePivot.SetActive(true);
         perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = yelloLight;
-        if (dir == Direction.上下 && status == Status.正方向) {
+        if (dir == Direction.上下 && status == Status.正方向)
+        {
             ani.SetTrigger("WalkUp");
         }
-        else if (dir == Direction.上下 && status == Status.負方向) {
+        else if (dir == Direction.上下 && status == Status.負方向)
+        {
             ani.SetTrigger("WalkDown");
         }
-        else if (dir == Direction.左右 && status == Status.負方向) {
+        else if (dir == Direction.左右 && status == Status.負方向)
+        {
             ani.SetTrigger("WalkLeft");
         }
-        else {
+        else
+        {
             ani.SetTrigger("WalkRight");
         }
         start = true;
         goBack = false;
     }
 
-    public void DetectWorkTable(GameObject workTable) {
-        if(workTable == playerComp.GetnowWorkbench()) {
-            detectWorkTable = true;
-            detectWorkTableObj = workTable;
+    public void DetectWorkTable(GameObject workTable)
+    {
+        if (true/*player is work on work table*/)
+        {
+
         }
     }
 
-    private IEnumerator AttackTable() {
-        Vector2 catPos = transform.localPosition;
-        Vector2 tablePos = detectWorkTableObj.transform.localPosition;
-        float distanceX = tablePos.x - catPos.x;
-        float distanceY = tablePos.y - catPos.y;
-        if (distanceX > 0) {
-            transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
-        }
-        float deltaX = distanceX / 60.0f;
-        float deltaY = distanceY / 60.0f;
-
-        for (float i = catPos.x, j = catPos.y, k = 0; k < 60; i += deltaX, j += deltaY, k++) {
-            transform.localPosition = new Vector2(i, j);
-            yield return new WaitForSeconds(1 / 60);
-        }
-        ani.SetTrigger("AttackTable");
-        yield return new WaitForSeconds(40/60);
-        playerComp.DealnowWorkbenchDamage(50);
-        emotionSR.sprite = loveEmotion;
-        StartCoroutine(EmotionShowUpAndDisappear());
-
-        goBack = true;
-        StartCoroutine(GoBack());
-    }
-
-    private IEnumerator AngryStatus() {
+    private IEnumerator AngryStatus()
+    {
         yield return new WaitForSeconds(2 + 1 / 3);
         emotionSR.sprite = angryEmotion;
         emotionAni.SetTrigger("ShowUp");
@@ -610,13 +712,15 @@ public class Cat : MonoBehaviour {
         angry = true;
     }
 
-    private IEnumerator EmotionShowUpAndDisappear() {
+    private IEnumerator EmotionShowUpAndDisappear()
+    {
         emotionAni.SetTrigger("ShowUp");
         yield return new WaitForSeconds(0.5f);
         emotionAni.SetTrigger("Disappear");
     }
 
-    public void ReleaseCat() {
+    public void ReleaseCat()
+    {
         emotionAni.SetTrigger("Disappear");
         StopCoroutine(angryStatusInstance);
         emotionSR.sprite = loveEmotion;
