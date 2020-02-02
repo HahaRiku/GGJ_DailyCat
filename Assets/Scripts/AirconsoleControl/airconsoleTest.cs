@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 public class airconsoleTest : MonoBehaviour
 {
     public Dictionary<int, Player_Platformer> players = new Dictionary<int, Player_Platformer>();
-    [SerializeField] private PlayerMove playerMove;
+    [SerializeField] private AirconsolePlayer playerMove;
     void Start()
     {
         AirConsole.instance.onMessage += OnMessage;
