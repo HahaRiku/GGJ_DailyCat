@@ -64,6 +64,8 @@ public class Cat : MonoBehaviour {
     private Animator emotionAni;
     private bool angry = false;
 
+    private bool checkPlayerDodge = false;
+
     void OnEnable() {
         ani = GetComponent<Animator>();
     }
@@ -72,7 +74,7 @@ public class Cat : MonoBehaviour {
         perspectivePivot = transform.GetChild(0).gameObject;
         perspectivePivot.SetActive(false);
         GM = FindObjectOfType<GameManager>();
-        Player = FindObjectOfType<LifeBarPlayer>().gameObject;
+        Player = FindObjectOfType<Player>().gameObject;
         emotionPivot = transform.GetChild(1).gameObject;
         emotionSR = emotionPivot.transform.GetChild(0).GetComponent<SpriteRenderer>();
         emotionAni = emotionPivot.GetComponent<Animator>();
@@ -324,6 +326,11 @@ public class Cat : MonoBehaviour {
             if (true) {
 
             }
+
+            //release cat
+            if(Distance(transform.localPosition, Player.transform.localPosition) < 2 && Input.GetKeyDown(KeyCode.R)) {
+                ReleaseCat();
+            }
         }
     }
 
@@ -462,12 +469,16 @@ public class Cat : MonoBehaviour {
         }
         float deltaX = distanceX / 50.0f;
         float deltaY = distanceY / 50.0f;
+        attackPlayer = true;
+        
         for (float i = catPos.x, j = catPos.y, k = 0; k < 50; i += deltaX, j += deltaY, k++) {
-            attackPlayer = true;
             transform.localPosition = new Vector2(i, j);
             yield return new WaitForSeconds(1/60);
         }
+        checkPlayerDodge = true;
+        StartCoroutine(CheckPlayerDodge());
         yield return new WaitForSeconds(2.0f);
+        checkPlayerDodge = false;
         if(attackPlayer) {
             ResetRotation();
             goBack = true;
@@ -476,15 +487,24 @@ public class Cat : MonoBehaviour {
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision) {
-        if(attackPlayer) {
-            ResetRotation();
-            goBack = true;
-            attackPlayer = false;
+    private IEnumerator CheckPlayerDodge() {
+        while(true) {
+            if (!checkPlayerDodge) break;
+            else if(Distance(transform.localPosition, Player.transform.localPosition) < 2) {
+                checkPlayerDodge = false;
+                ResetRotation();
+                goBack = true;
+                attackPlayer = false;
+                if (playerComp == null) {
+                    playerComp = Player.GetComponent<Player>();
+                }
+                playerComp.PlayerFallDown();
+                print("test2");
 
-            playerComp.PlayerFallDown();
-
-            StartCoroutine(GoBack());
+                StartCoroutine(GoBack());
+                break;
+            }
+            yield return null;
         }
     }
 
@@ -495,6 +515,8 @@ public class Cat : MonoBehaviour {
     }
 
     private IEnumerator GoBack() {
+        emotionSR.sprite = loveEmotion;
+        StartCoroutine(EmotionShowUpAndDisappear());
         Vector2 catPos = transform.localPosition;
         float distanceX = helloDestX - catPos.x;
         float distanceY = helloDestY - catPos.y;
@@ -557,7 +579,7 @@ public class Cat : MonoBehaviour {
 
     private IEnumerator EmotionShowUpAndDisappear() {
         emotionAni.SetTrigger("ShowUp");
-        yield return new WaitForSeconds(1 / 6);
+        yield return new WaitForSeconds(0.5f);
         emotionAni.SetTrigger("Disappear");
     }
 
