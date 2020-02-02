@@ -38,6 +38,8 @@ public class Cat : MonoBehaviour {
 
     private bool collide = false;
 
+    public Sprite yelloLight;
+    public Sprite redLight;
     private GameObject perspectivePivot;
     private float rotationSpeed = 0.1f;
     private float rotationAngle = 0.0f;
@@ -54,6 +56,13 @@ public class Cat : MonoBehaviour {
     private bool attackPlayer = false;
     private bool goBack = false;
 
+    public Sprite angryEmotion;
+    public Sprite loveEmotion;
+    private GameObject emotionPivot;
+    private SpriteRenderer emotionSR;
+    private Animator emotionAni;
+    private bool angry = false;
+
     void OnEnable() {
         ani = GetComponent<Animator>();
     }
@@ -63,6 +72,9 @@ public class Cat : MonoBehaviour {
         perspectivePivot.SetActive(false);
         GM = FindObjectOfType<GameManager>();
         Player = FindObjectOfType<LifeBarPlayer>().gameObject;
+        emotionPivot = transform.GetChild(1).gameObject;
+        emotionSR = emotionPivot.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        emotionAni = emotionPivot.GetComponent<Animator>();
     }
 
     void Update() {
@@ -85,6 +97,7 @@ public class Cat : MonoBehaviour {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
+                    StartCoroutine(AngryStatus());
                 }
             }
             else if (helloDir == FourDirection.下) {
@@ -105,6 +118,7 @@ public class Cat : MonoBehaviour {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
+                    StartCoroutine(AngryStatus());
                 }
             }
             else if (helloDir == FourDirection.右) {
@@ -125,6 +139,7 @@ public class Cat : MonoBehaviour {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
+                    StartCoroutine(AngryStatus());
                 }
             }
             else {
@@ -145,6 +160,7 @@ public class Cat : MonoBehaviour {
                         ani.SetTrigger("WalkRight");
                     }
                     perspectivePivot.SetActive(true);
+                    StartCoroutine(AngryStatus());
                 }
             }
         }
@@ -243,19 +259,19 @@ public class Cat : MonoBehaviour {
             }
             else if (byeDir == FourDirection.下) {
                 transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - speed * 5);
-                if (transform.localPosition.y <= -6) {
+                if (transform.localPosition.y <= -8) {
                     bye = false;
                 }
             }
             else if (byeDir == FourDirection.右) {
                 transform.localPosition = new Vector2(transform.localPosition.x + speed * 5, transform.localPosition.y);
-                if (transform.localPosition.x >= 10) {
+                if (transform.localPosition.x >= 15) {
                     bye = false;
                 }
             }
             else {
                 transform.localPosition = new Vector2(transform.localPosition.x - speed * 5, transform.localPosition.y);
-                if (transform.localPosition.x <= -10) {
+                if (transform.localPosition.x <= -15) {
                     bye = false;
                 }
             }
@@ -289,18 +305,22 @@ public class Cat : MonoBehaviour {
             else {
                 perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
             }*/
-            if(start) {
-                if (!detectPlayer) {
-                    perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
-                }
-                else {
-                    detectPlayer = false;
-                    perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
-                    ani.SetTrigger("Stop");
-                    start = false;
-                    perspectivePivot.SetActive(false);
-                    StartCoroutine(AttackPlayer());
-                }
+
+            if (!detectPlayer) {
+                perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = yelloLight;
+            }
+            else {
+                detectPlayer = false;
+                perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = redLight;
+                ani.SetTrigger("Stop");
+                start = false;
+                perspectivePivot.SetActive(false);
+                StartCoroutine(AttackPlayer());
+            }
+
+            //detect work table
+            if (true) {
+
             }
         }
     }
@@ -422,7 +442,7 @@ public class Cat : MonoBehaviour {
     }
 
     public void DetectPlayer(GameObject player) {
-        if(start) {
+        if(start && angry) {
             detectPlayer = true;
             detectPlayerObj = player;
         }
@@ -500,7 +520,7 @@ public class Cat : MonoBehaviour {
         }
         yield return new WaitForSeconds(0.5f);
         perspectivePivot.SetActive(true);
-        perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+        perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = yelloLight;
         if (dir == Direction.上下 && status == Status.正方向) {
             ani.SetTrigger("WalkUp");
         }
@@ -515,5 +535,36 @@ public class Cat : MonoBehaviour {
         }
         start = true;
         goBack = false;
+    }
+
+    public void DetectWorkTable(GameObject workTable) {
+        if(true/*player is work on work table*/) {
+
+        }
+    }
+
+    private IEnumerator AngryStatus() {
+        yield return new WaitForSeconds(2 + 1 / 3);
+        emotionSR.sprite = angryEmotion;
+        emotionAni.SetTrigger("ShowUp");
+        yield return new WaitForSeconds(1 / 6);
+        emotionAni.SetTrigger("MoreAngry");
+        yield return new WaitForSeconds(2.5f);
+        angry = true;
+    }
+
+    private IEnumerator EmotionShowUpAndDisappear() {
+        emotionAni.SetTrigger("ShowUp");
+        yield return new WaitForSeconds(1 / 6);
+        emotionAni.SetTrigger("Disappear");
+    }
+
+    public void ReleaseCat() {
+        emotionAni.SetTrigger("Disappear");
+        StopCoroutine(AngryStatus());
+        emotionSR.sprite = loveEmotion;
+        StartCoroutine(EmotionShowUpAndDisappear());
+        angry = false;
+        StartCoroutine(AngryStatus());
     }
 }
