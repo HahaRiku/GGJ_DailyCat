@@ -48,6 +48,16 @@ public class Cat : MonoBehaviour {
     private GameObject Player;
     private float perspectiveRadius = 2.5f;
 
+    private Animator ani;
+    private bool detectPlayer = false;
+    private GameObject detectPlayerObj;
+    private bool attackPlayer = false;
+    private bool goBack = false;
+
+    void OnEnable() {
+        ani = GetComponent<Animator>();
+    }
+
     void Start() {
         perspectivePivot = transform.GetChild(0).gameObject;
         perspectivePivot.SetActive(false);
@@ -62,6 +72,18 @@ public class Cat : MonoBehaviour {
                 if (transform.localPosition.y >= helloDestY) {
                     hello = false;
                     start = true;
+                    if (dir == Direction.上下 && status == Status.正方向) {
+                        ani.SetTrigger("WalkUp");
+                    }
+                    else if (dir == Direction.上下 && status == Status.負方向) {
+                        ani.SetTrigger("WalkDown");
+                    }
+                    else if (dir == Direction.左右 && status == Status.負方向) {
+                        ani.SetTrigger("WalkLeft");
+                    }
+                    else {
+                        ani.SetTrigger("WalkRight");
+                    }
                     perspectivePivot.SetActive(true);
                 }
             }
@@ -70,6 +92,18 @@ public class Cat : MonoBehaviour {
                 if (transform.localPosition.y <= helloDestY) {
                     hello = false;
                     start = true;
+                    if (dir == Direction.上下 && status == Status.正方向) {
+                        ani.SetTrigger("WalkUp");
+                    }
+                    else if (dir == Direction.上下 && status == Status.負方向) {
+                        ani.SetTrigger("WalkDown");
+                    }
+                    else if (dir == Direction.左右 && status == Status.負方向) {
+                        ani.SetTrigger("WalkLeft");
+                    }
+                    else {
+                        ani.SetTrigger("WalkRight");
+                    }
                     perspectivePivot.SetActive(true);
                 }
             }
@@ -78,6 +112,18 @@ public class Cat : MonoBehaviour {
                 if (transform.localPosition.x >= helloDestX) {
                     hello = false;
                     start = true;
+                    if (dir == Direction.上下 && status == Status.正方向) {
+                        ani.SetTrigger("WalkUp");
+                    }
+                    else if (dir == Direction.上下 && status == Status.負方向) {
+                        ani.SetTrigger("WalkDown");
+                    }
+                    else if (dir == Direction.左右 && status == Status.負方向) {
+                        ani.SetTrigger("WalkLeft");
+                    }
+                    else {
+                        ani.SetTrigger("WalkRight");
+                    }
                     perspectivePivot.SetActive(true);
                 }
             }
@@ -86,6 +132,18 @@ public class Cat : MonoBehaviour {
                 if (transform.localPosition.x <= helloDestX) {
                     hello = false;
                     start = true;
+                    if (dir == Direction.上下 && status == Status.正方向) {
+                        ani.SetTrigger("WalkUp");
+                    }
+                    else if (dir == Direction.上下 && status == Status.負方向) {
+                        ani.SetTrigger("WalkDown");
+                    }
+                    else if (dir == Direction.左右 && status == Status.負方向) {
+                        ani.SetTrigger("WalkLeft");
+                    }
+                    else {
+                        ani.SetTrigger("WalkRight");
+                    }
                     perspectivePivot.SetActive(true);
                 }
             }
@@ -98,6 +156,7 @@ public class Cat : MonoBehaviour {
                     }
                     else {
                         status = Status.負方向;
+                        ani.SetTrigger("WalkDown");
                         originalAngle = -90.0f;
                         rotationAngle += 180.0f;
                         rotationAngle %= 360.0f;
@@ -117,6 +176,7 @@ public class Cat : MonoBehaviour {
                     }
                     else {
                         status = Status.正方向;
+                        ani.SetTrigger("WalkUp");
                         originalAngle = 90.0f;
                         rotationAngle -= 180.0f;
                         rotationAngle %= 360.0f;
@@ -138,6 +198,7 @@ public class Cat : MonoBehaviour {
                     }
                     else {
                         status = Status.負方向;
+                        ani.SetTrigger("WalkLeft");
                         originalAngle = 180.0f;
                         rotationAngle += 180.0f;
                         rotationAngle %= 360.0f;
@@ -157,6 +218,7 @@ public class Cat : MonoBehaviour {
                     }
                     else {
                         status = Status.正方向;
+                        ani.SetTrigger("WalkRight");
                         originalAngle = 0.0f;
                         rotationAngle += 180.0f;
                         rotationAngle %= 360.0f;
@@ -217,16 +279,28 @@ public class Cat : MonoBehaviour {
             perspectivePivot.transform.localRotation = Quaternion.Euler(0, 0, rotationAngle);
 
             //detect player
-            float tempDistance = Distance(Player.transform.localPosition, transform.localPosition);
+            /*float tempDistance = Distance(Player.transform.localPosition, transform.localPosition);
             Vector2 v = new Vector2(perspectiveRadius * Mathf.Cos(rotationAngle * 3.14f / 180), perspectiveRadius * Mathf.Sin(rotationAngle * 3.14f / 180));
             float tempAngle = Mathf.Acos(Dot(GetVector(Player.transform.localPosition, transform.localPosition), v) / tempDistance / perspectiveRadius) * 180 / 3.14f;
             tempAngle = ModifyAngle(tempAngle);
-            print(tempAngle);
             if (tempDistance <= perspectiveRadius && tempAngle < 45 && tempAngle > -45) {
                 perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
             }
             else {
                 perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+            }*/
+            if(start) {
+                if (!detectPlayer) {
+                    perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+                }
+                else {
+                    detectPlayer = false;
+                    perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
+                    ani.SetTrigger("Stop");
+                    start = false;
+                    perspectivePivot.SetActive(false);
+                    StartCoroutine(AttackPlayer());
+                }
             }
         }
     }
@@ -300,10 +374,34 @@ public class Cat : MonoBehaviour {
             byeDir = (transform.localPosition.y >= 0) ? FourDirection.上 : FourDirection.下;
         }
         bye = true;
+        if (byeDir == FourDirection.上) {
+            ani.SetTrigger("WalkUp");
+        }
+        else if (byeDir == FourDirection.下) {
+            ani.SetTrigger("WalkDown");
+        }
+        else if (byeDir == FourDirection.左) {
+            ani.SetTrigger("WalkLeft");
+        }
+        else {
+            ani.SetTrigger("WalkRight");
+        }
     }
 
     public void HelloCat() {
         hello = true;
+        if(helloDir == FourDirection.上) {
+            ani.SetTrigger("WalkUp");
+        }
+        else if(helloDir == FourDirection.下) {
+            ani.SetTrigger("WalkDown");
+        }
+        else if(helloDir == FourDirection.左) {
+            ani.SetTrigger("WalkLeft");
+        }
+        else {
+            ani.SetTrigger("WalkRight");
+        }
     }
 
     public bool IsIdle() {
@@ -311,12 +409,108 @@ public class Cat : MonoBehaviour {
     }
 
     public bool IsExisted() {
-        return start || bye || hello;
+        return start || bye || hello || attackPlayer || goBack;
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if(start) {
             collide = true;
         }
+    }
+
+    public void DetectPlayer(GameObject player) {
+        if(start) {
+            detectPlayer = true;
+            detectPlayerObj = player;
+        }
+    }
+
+    private IEnumerator AttackPlayer() {
+        yield return new WaitForSeconds(3.0f);
+        ani.SetTrigger("AttackPlayer");
+        Vector2 catPos = transform.localPosition;
+        Vector2 playerPos = detectPlayerObj.transform.localPosition;
+        float distanceX = playerPos.x - catPos.x;
+        float distanceY = playerPos.y - catPos.y;
+        if(distanceX > 0) {
+            transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+        }
+        float deltaX = distanceX / 50.0f;
+        float deltaY = distanceY / 50.0f;
+        for (float i = catPos.x, j = catPos.y, k = 0; k < 50; i += deltaX, j += deltaY, k++) {
+            attackPlayer = true;
+            transform.localPosition = new Vector2(i, j);
+            yield return new WaitForSeconds(1/60);
+        }
+        yield return new WaitForSeconds(2.0f);
+        if(attackPlayer) {
+            ResetRotation();
+            goBack = true;
+            attackPlayer = false;
+            StartCoroutine(GoBack());
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision) {
+        if(attackPlayer) {
+            ResetRotation();
+            goBack = true;
+            attackPlayer = false;
+            
+            //玩家倒地
+
+            StartCoroutine(GoBack());
+        }
+    }
+
+    private void ResetRotation() {
+        if(transform.localScale.x < 0) {
+            transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+        }
+    }
+
+    private IEnumerator GoBack() {
+        Vector2 catPos = transform.localPosition;
+        float distanceX = helloDestX - catPos.x;
+        float distanceY = helloDestY - catPos.y;
+        float deltaX = distanceX / 50.0f;
+        float deltaY = distanceY / 50.0f;
+        if(Mathf.Abs(distanceX) >= Mathf.Abs(distanceY)) {
+            if(distanceX >= 0) {
+                ani.SetTrigger("WalkRight");
+            }
+            else {
+                ani.SetTrigger("WalkLeft");
+            }
+        }
+        else {
+            if(distanceY >= 0) {
+                ani.SetTrigger("WalkUp");
+            }
+            else {
+                ani.SetTrigger("WalkDown");
+            }
+        }
+        for(float i = catPos.x, j = catPos.y, k =0; k<50; i+=deltaX, j +=deltaY, k++) {
+            transform.localPosition = new Vector2(i, j);
+            yield return new WaitForSeconds(0.1f);
+        }
+        yield return new WaitForSeconds(0.5f);
+        perspectivePivot.SetActive(true);
+        perspectivePivot.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+        if (dir == Direction.上下 && status == Status.正方向) {
+            ani.SetTrigger("WalkUp");
+        }
+        else if (dir == Direction.上下 && status == Status.負方向) {
+            ani.SetTrigger("WalkDown");
+        }
+        else if (dir == Direction.左右 && status == Status.負方向) {
+            ani.SetTrigger("WalkLeft");
+        }
+        else {
+            ani.SetTrigger("WalkRight");
+        }
+        start = true;
+        goBack = false;
     }
 }
