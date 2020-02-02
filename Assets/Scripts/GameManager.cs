@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager manager;
 
+    [SerializeField] Image emptyobject=null;
     //state variable
     int currentScore = 0;
 
@@ -75,6 +77,7 @@ public class GameManager : MonoBehaviour
             EndUI.SetActive(true);
             Time.timeScale = 0f;
             EndGame = true;
+            ScoreMove();
 
         }
     }
@@ -104,16 +107,28 @@ public class GameManager : MonoBehaviour
         Instantiate(antique, position, transform.rotation);
     }
 
-    private void Restart()
+
+    bool restart=false;
+    public void reload()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        restart = true;
+    }
+    public void Restart()
+    {
+        if (Input.GetKeyDown(KeyCode.Q)||restart)
         {
             canCount = true;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
-
-
+    public void ScoreMove()
+    {
+        print("");
+        uiimage3.transform.position = emptyobject.transform.position;
+        //Tween t= uiimage3.rectTransform.DOLocalMove(emptyobject.rectTransform.localPosition, 1.0f);
+        print(emptyobject.transform.position);
+        print(uiimage3.transform.position);
+    }
 
 }
 
