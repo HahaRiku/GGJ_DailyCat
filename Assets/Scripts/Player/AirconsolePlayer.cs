@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class AirconsolePlayer : MonoBehaviour
 {
     Animator anim;
     [SerializeField] float moveSpeed = 10f;
@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     bool isRight = false;
     bool isLeft = false;
     bool isRepair = false;
-    bool isDiscard = false;
+    bool isTouch = false;
 
     //player moving range
     float xMin;
@@ -51,18 +51,48 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     void FixedUpdate()
-    {
-        
+    {        
         if (!isFallDown)
         {
-            Move();
-            //Behaviorhandler();
+            //Move();
+            Behaviorhandler();
         }
 
     }
     private void Behaviorhandler()
     {
-        if(isUp && !isDown)
+        if (isRepair)
+        {
+            if (canWorking)
+            {
+                isWorking = true;
+                anim.SetBool("isWalking", false);
+                anim.SetBool("isWorking", true);
+                SetPLayerFilpX(anim.GetInteger("dir"));
+                return;
+            }
+        }
+        else
+        {
+            isWorking = false;
+            anim.SetBool("isWorking", false);
+            SetPLayerFilpX(4);
+        }
+        if (isTouch)
+        {
+            anim.SetBool("isWalking", false);
+            anim.SetBool("isTouching", true);
+            SetPLayerFilpX(anim.GetInteger("dir"));
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.flipX = !spriteRenderer.flipX;
+            return;
+        }
+        else
+        {
+            anim.SetBool("isTouching", false);
+            SetPLayerFilpX(4);
+        }
+        if (isUp && !isDown)
         {
             SetPlayerMove(0, 1 * Time.deltaTime);
             SetPLayerAnimation(3, true);
@@ -235,14 +265,14 @@ public class Player : MonoBehaviour
                     isRepair = false;
                 }
                 break;
-            case "Discard":
+            case "Touch":
                 if (isPressed)
                 {
-                    isDiscard = true;
+                    isTouch = true;
                 }
                 else
                 {
-                    isDiscard = false;
+                    isTouch = false;
                 }
                 break;
             default:
