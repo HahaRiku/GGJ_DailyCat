@@ -63,6 +63,7 @@ public class AirconsolePlayer : MonoBehaviour
     {
         if (isRepair)
         {
+            GameManager.manager.reload();
             if (canWorking)
             {
                 isWorking = true;
