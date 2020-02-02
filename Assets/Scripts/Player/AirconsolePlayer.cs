@@ -63,6 +63,7 @@ public class AirconsolePlayer : MonoBehaviour
     {
         if (isRepair)
         {
+            GameManager.manager.reload();
             if (canWorking)
             {
                 isWorking = true;
@@ -105,12 +106,13 @@ public class AirconsolePlayer : MonoBehaviour
         else if (isRight && !isLeft)
         {
             SetPlayerMove(1 * Time.deltaTime, 0);
-            SetPLayerAnimation(1, true);
+            SetPLayerAnimation(2, true);
         }
         else if (!isRight && isLeft)
         {
             SetPlayerMove(-1 * Time.deltaTime, 0);
-            SetPLayerAnimation(2, true);
+            SetPLayerAnimation(1, true);
+            
         }
         else if(!(((isRight|| isLeft) || isDown) || isUp))
         {
@@ -268,7 +270,10 @@ public class AirconsolePlayer : MonoBehaviour
             case "Touch":
                 if (isPressed)
                 {
-                    isTouch = true;
+                    if (!isRepair)
+                    {
+                        isTouch = true;
+                    }                    
                 }
                 else
                 {
@@ -378,6 +383,10 @@ public class AirconsolePlayer : MonoBehaviour
         {
             nowHealBar.getLifeBarSystem().Damage(damage);
         }        
+    }
+    public bool GetPlayerTouching()
+    {
+        return isTouch;
     }
 
 }

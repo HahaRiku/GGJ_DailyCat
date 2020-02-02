@@ -38,10 +38,14 @@ public class HealthBarCollision : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (Input.GetKey(KeyCode.Z))
+        if(collision.gameObject.GetComponent<Player>() != null)
         {
-            healthBar.getLifeBarSystem().Heal((float)lifeHeal * Time.deltaTime);
+            if (collision.gameObject.GetComponent<Player>().GetPlayerWorking())
+            {
+                healthBar.getLifeBarSystem().Heal((float)lifeHeal * Time.deltaTime);
+            }
         }
+        
                   
     }
 }
