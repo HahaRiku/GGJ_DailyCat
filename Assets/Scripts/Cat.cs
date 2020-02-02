@@ -47,8 +47,10 @@ public class Cat : MonoBehaviour {
     private RotationStatus rotationStatus = RotationStatus.逆時針;
 
     private GameManager GM;
-    private GameObject Player;
-    private Player playerComp;
+    private GameObject Player1;
+    private GameObject Player2;
+    private Player player1Comp;
+    private Player player2Comp;
     private float perspectiveRadius = 2.5f;
 
     private Animator ani;
@@ -76,11 +78,13 @@ public class Cat : MonoBehaviour {
         perspectivePivot = transform.GetChild(0).gameObject;
         perspectivePivot.SetActive(false);
         GM = FindObjectOfType<GameManager>();
-        Player = FindObjectOfType<Player>().gameObject;
+        Player1 = GM.Player1;
+        Player2 = GM.Player2;
         emotionPivot = transform.GetChild(1).gameObject;
         emotionSR = emotionPivot.transform.GetChild(0).GetComponent<SpriteRenderer>();
         emotionAni = emotionPivot.GetComponent<Animator>();
-        playerComp = Player.GetComponent<Player>();
+        player1Comp = Player1.GetComponent<Player>();
+        player2Comp = Player2.GetComponent<Player>();
     }
 
     void Update() {
@@ -330,7 +334,8 @@ public class Cat : MonoBehaviour {
             }
 
             //release cat
-            if(Distance(transform.localPosition, Player.transform.localPosition) < 2 && Input.GetKeyDown(KeyCode.R)) {
+            if(Distance(transform.localPosition, Player1.transform.localPosition) < 2 
+                ||Distance(transform.localPosition, Player2.transform.localPosition) < 2 && Input.GetKeyDown(KeyCode.R)) {
                 ReleaseCat();
             }
         }
@@ -478,7 +483,7 @@ public class Cat : MonoBehaviour {
             yield return new WaitForSeconds(1/60);
         }
         checkPlayerDodge = true;
-        StartCoroutine(CheckPlayerDodge());
+        StartCoroutine(CheckPlayerDodge(detectPlayerObj));
         yield return new WaitForSeconds(2.0f);
         checkPlayerDodge = false;
         if(attackPlayer) {
@@ -489,20 +494,17 @@ public class Cat : MonoBehaviour {
         }
     }
 
-    private IEnumerator CheckPlayerDodge() {
+    private IEnumerator CheckPlayerDodge(GameObject player) {
         while(true) {
             if (!checkPlayerDodge) break;
-            else if(Distance(transform.localPosition, Player.transform.localPosition) < 2) {
+            else if(Distance(transform.localPosition, player.transform.localPosition) < 2) {
                 checkPlayerDodge = false;
                 ResetRotation();
                 goBack = true;
                 attackPlayer = false;
-                if (playerComp == null) {
-                    playerComp = Player.GetComponent<Player>();
-                }
+                Player playerComp = player.GetComponent<Player>();
                 playerComp.PlayerFallDown();
                 print("test2");
-
                 StartCoroutine(GoBack());
                 break;
             }
