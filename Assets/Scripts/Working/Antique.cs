@@ -21,10 +21,10 @@ public class Antique : MonoBehaviour
     {
         if(healBarControl.getLifeBarSystem().GetHealthPercent() >= 1)
         {
-            if(FindObjectOfType<AntiqueController>()!= null)
+            if(FindObjectOfType<GameManager>()!= null)
             {
-                FindObjectOfType<AntiqueController>().AddToScore(pointsPerObjectFixed);
-                FindObjectOfType<AntiqueController>().CreateNewOne(transform.position);
+                FindObjectOfType<GameManager>().AddToScore(pointsPerObjectFixed);
+                FindObjectOfType<GameManager>().CreateNewOne(transform.position);
             }           
             Destroy(gameObject);
             

@@ -11,6 +11,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text uitext;
     [SerializeField] private Image uiimage1;
     [SerializeField] private Image uiimage2;
+    [SerializeField] private Image uiimage3;
+    [SerializeField] private Image uiimage4;
+    [SerializeField] Text scoreText = null;
+    [SerializeField] GameObject antique = null;
+
+    //state variable
+    int currentScore = 0;
+
+    [SerializeField] float timeToReCreate = 5f;
     [SerializeField] private float mainTimer;
     public GameObject Player1;
     public GameObject Player2;
@@ -22,11 +31,19 @@ public class GameManager : MonoBehaviour
     private bool doOnce = false;
     private bool EndGame = false;
 
-   
+    //private void Awake()
+    //{
+    //    int gameStatusCount = FindObjectsOfType<AntiqueController>().Length;
+    //    if (gameStatusCount > 1)
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
     // Start is called before the first frame update
     void Start()
     {
         timer = mainTimer;
+        scoreText.text = currentScore.ToString();
     }
 
     // Update is called once per frame
@@ -43,10 +60,8 @@ public class GameManager : MonoBehaviour
         {
             timer -= Time.deltaTime;
             uitext.text = timer.ToString("F");
-            uiimage1.sprite = numbers[(int)timer%10];
-            uiimage2.sprite = numbers[(int)timer/10];
-
-
+            uiimage1.sprite = numbers[(int)timer % 10];
+            uiimage2.sprite = numbers[(int)timer / 10];
         }
         else if (timer <= 0.0f && !doOnce)
         {
@@ -57,9 +72,35 @@ public class GameManager : MonoBehaviour
             EndUI.SetActive(true);
             Time.timeScale = 0f;
             EndGame = true;
-            
+
         }
     }
+
+
+    public void AddToScore(int pointsPerObjectFixed)
+    {
+        currentScore = currentScore + pointsPerObjectFixed;
+        Debug.Log(currentScore);
+        scoreText.text = currentScore.ToString();
+        uiimage3.sprite = numbers[currentScore / 10];
+        uiimage4.sprite = numbers[currentScore % 10];
+    }
+
+    public void ResetGame()
+    {
+        Destroy(gameObject);
+    }
+
+    public void CreateNewOne(Vector3 position)
+    {
+        StartCoroutine(ReCreateNewOne(position));
+    }
+    IEnumerator ReCreateNewOne(Vector3 position)
+    {
+        yield return new WaitForSeconds(timeToReCreate);
+        Instantiate(antique, position, transform.rotation);
+    }
+
     private void Restart()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -68,7 +109,8 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
-    
+
 
 
 }
+
