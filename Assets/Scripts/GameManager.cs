@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image uiimage3;
     [SerializeField] private Image uiimage4;
     [SerializeField] Text scoreText = null;
-    [SerializeField] GameObject antique = null;
+    [SerializeField] GameObject[] antique;
 
     //state variable
     int currentScore = 0;
@@ -97,8 +97,9 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator ReCreateNewOne(Vector3 position)
     {
+        int random_num = Random.Range(0, antique.Length);
         yield return new WaitForSeconds(timeToReCreate);
-        Instantiate(antique, position, transform.rotation);
+        Instantiate(antique[random_num], position, transform.rotation);
     }
 
     private void Restart()
