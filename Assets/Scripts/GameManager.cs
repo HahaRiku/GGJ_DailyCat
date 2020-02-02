@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Text scoreText = null;
     [SerializeField] GameObject antique = null;
 
+    public static GameManager manager;
+
     //state variable
     int currentScore = 0;
 
@@ -42,7 +44,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timer = mainTimer;
+       manager = this;
+       timer = mainTimer;
         scoreText.text = currentScore.ToString();
     }
 
