@@ -356,11 +356,11 @@ public class Cat : MonoBehaviour {
         helloDestY = destY;
         if (Mathf.Abs(helloDestX) >= Mathf.Abs(helloDestY)) {
             helloDir = (helloDestX >= 0) ? FourDirection.左 : FourDirection.右;
-            transform.localPosition = (helloDestX >= 0) ? new Vector2(10, destY) : new Vector2(-10, destY);
+            transform.localPosition = (helloDestX >= 0) ? new Vector2(15, destY) : new Vector2(-15, destY);
         }
         else {
             helloDir = (helloDestY >= 0) ? FourDirection.下 : FourDirection.上;
-            transform.localPosition = (helloDestY >= 0) ? new Vector2(destX, 6) : new Vector2(destX, -6);
+            transform.localPosition = (helloDestY >= 0) ? new Vector2(destX, 6) : new Vector2(destX, -8);
         }
     }
 
@@ -390,6 +390,9 @@ public class Cat : MonoBehaviour {
 
     public void HelloCat() {
         hello = true;
+        if(ani == null) {
+            ani = GetComponent<Animator>();
+        }
         if(helloDir == FourDirection.上) {
             ani.SetTrigger("WalkUp");
         }
