@@ -164,6 +164,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HeathBarSystem
       objectReference: {fileID: 0}
+    - target: {fileID: 1384863467121392262, guid: 1a48043308a550448af813bec8fc9cfa,
+        type: 3}
+      propertyPath: m_TagString
+      value: antique
+      objectReference: {fileID: 0}
     - target: {fileID: 1384863467121392280, guid: 1a48043308a550448af813bec8fc9cfa,
         type: 3}
       propertyPath: lifeHeal
