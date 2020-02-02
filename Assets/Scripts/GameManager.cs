@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q)||restart)
         {
             canCount = true;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(0);
         }
     }
     public void ScoreMove()

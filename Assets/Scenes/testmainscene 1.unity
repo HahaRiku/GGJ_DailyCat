@@ -3075,8 +3075,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCon:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1575158523}
+  - {fileID: 2060352862}
 --- !u!1 &667056992
 GameObject:
   m_ObjectHideFlags: 0
@@ -5193,7 +5193,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: AirconsolePlayer
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 716373944861650493, guid: 21f64ddca073d2b4c9b7d1627cac699b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 21f64ddca073d2b4c9b7d1627cac699b, type: 3}
 --- !u!1 &1575158522 stripped
 GameObject:
@@ -5201,6 +5202,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1575158521}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1575158523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575158522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52f17305fd6524742a339113128a18e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
+  padding: 1
 --- !u!1 &1578272591
 GameObject:
   m_ObjectHideFlags: 0
@@ -6266,8 +6281,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7adbfe261ecc4af4193f71e2c9b9ae72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  padding: 1
 --- !u!1001 &2060352860
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6335,7 +6348,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: AirconsolePlayer (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 716373944861650493, guid: 21f64ddca073d2b4c9b7d1627cac699b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 21f64ddca073d2b4c9b7d1627cac699b, type: 3}
 --- !u!1 &2060352861 stripped
 GameObject:
@@ -6343,6 +6357,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2060352860}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2060352862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060352861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52f17305fd6524742a339113128a18e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
+  padding: 1
 --- !u!1001 &2066210727
 PrefabInstance:
   m_ObjectHideFlags: 0
