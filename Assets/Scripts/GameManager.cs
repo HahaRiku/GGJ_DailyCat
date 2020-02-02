@@ -15,7 +15,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image uiimage3;
     [SerializeField] private Image uiimage4;
     [SerializeField] Text scoreText = null;
-    [SerializeField] GameObject antique = null;
+    [SerializeField] GameObject[] antique;
+
+    public static GameManager manager;
+
     [SerializeField] Image emptyobject=null;
     //state variable
     int currentScore = 0;
@@ -43,7 +46,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timer = mainTimer;
+       manager = this;
+       timer = mainTimer;
         scoreText.text = currentScore.ToString();
     }
 
@@ -99,8 +103,9 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator ReCreateNewOne(Vector3 position)
     {
+        int random_num = Random.Range(0, antique.Length);
         yield return new WaitForSeconds(timeToReCreate);
-        Instantiate(antique, position, transform.rotation);
+        Instantiate(antique[random_num], position, transform.rotation);
     }
 
 

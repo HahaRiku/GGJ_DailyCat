@@ -5,8 +5,10 @@ using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
 public class airconsoleTest : MonoBehaviour
 {
-    public Dictionary<int, Player_Platformer> players = new Dictionary<int, Player_Platformer>();
-    [SerializeField] private AirconsolePlayer playerMove;
+    public Dictionary<int, AirconsolePlayer> players = new Dictionary<int, AirconsolePlayer>();
+    [SerializeField] private List<AirconsolePlayer> playerCon=new List<AirconsolePlayer>();
+
+    private int DeviceCount = 0;
     void Start()
     {
         AirConsole.instance.onMessage += OnMessage;
@@ -33,14 +35,15 @@ public class airconsoleTest : MonoBehaviour
     private void AddNewPlayer(int deviceID)
     {
 
-        if (players.ContainsKey(deviceID))
+        if (players.ContainsKey(deviceID) || DeviceCount >= 2)
         {
             return;
         }
 
         //Instantiate player prefab, store device id + player script in a dictionary
         //GameObject newPlayer = Instantiate(playerPrefab, transform.position, transform.rotation) as GameObject;
-        //players.Add(deviceID, newPlayer.GetComponent<Player_Platformer>());
+        players.Add(deviceID, playerCon[DeviceCount]);
+        DeviceCount++;
     }
     void OnMessage(int from, JToken data)
     {
@@ -52,16 +55,16 @@ public class airconsoleTest : MonoBehaviour
             switch (key)
             {
                 case "up":
-                    playerMove.PlayerDo("Up", isPressed);
+                    players[from].PlayerDo("Up", isPressed);
                     break;
                 case "down":
-                    playerMove.PlayerDo("Down", isPressed);
+                    players[from].PlayerDo("Down", isPressed);
                     break;
                 case "right":
-                    playerMove.PlayerDo("Right", isPressed);
+                    players[from].PlayerDo("Right", isPressed);
                     break;
                 case "left":
-                    playerMove.PlayerDo("Left", isPressed);
+                    players[from].PlayerDo("Left", isPressed);
                     break;
                 default:
                     break;
@@ -70,12 +73,12 @@ public class airconsoleTest : MonoBehaviour
         if (element == "Repair")
         {
             bool isPressed = (bool)data["data"]["pressed"];
-            playerMove.PlayerDo("Repair", isPressed);
+            players[from].PlayerDo("Repair", isPressed);
         }
         if (element == "Discard")
         {
             bool isPressed = (bool)data["data"]["pressed"];
-            playerMove.PlayerDo("Discard", isPressed);
+            players[from].PlayerDo("Discard", isPressed);
         }
     }
 }
