@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5521223849898643507}
   - component: {fileID: 5521223849898643506}
   - component: {fileID: 5521223849898643509}
-  - component: {fileID: 4027593532697866487}
+  - component: {fileID: 716373944861650493}
   m_Layer: 0
   m_Name: AirconsolePlayer
   m_TagString: Player
@@ -152,7 +152,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4027593532697866487
+--- !u!114 &716373944861650493
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,5 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7adbfe261ecc4af4193f71e2c9b9ae72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player1: 1
   moveSpeed: 10
   padding: 1

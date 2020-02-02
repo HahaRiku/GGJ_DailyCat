@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] bool player1 = true;
     Animator anim;
     [SerializeField] float moveSpeed = 10f;
     [SerializeField] float padding = 1f;
@@ -17,7 +16,6 @@ public class Player : MonoBehaviour
     bool isRight = false;
     bool isLeft = false;
     bool isRepair = false;
-    bool isDiscard = false;
     bool isTouch = false;
 
     //player moving range
@@ -53,25 +51,50 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     void FixedUpdate()
-    {
-        
+    {        
         if (!isFallDown)
         {
-            if (player1)
-            {
-                Move();
-            }
-            else
-            {
-                Move2();
-            }            
-            //Behaviorhandler();
+            //Move();
+            Behaviorhandler();
         }
 
     }
     private void Behaviorhandler()
     {
-        if(isUp && !isDown)
+        if (isRepair)
+        {
+            if (GameManager.manager.EndGame)
+                GameManager.manager.reload();
+            if (canWorking)
+            {
+                isWorking = true;
+                anim.SetBool("isWalking", false);
+                anim.SetBool("isWorking", true);
+                SetPLayerFilpX(anim.GetInteger("dir"));
+                return;
+            }
+        }
+        else
+        {
+            isWorking = false;
+            anim.SetBool("isWorking", false);
+            SetPLayerFilpX(4);
+        }
+        if (isTouch)
+        {
+            anim.SetBool("isWalking", false);
+            anim.SetBool("isTouching", true);
+            SetPLayerFilpX(anim.GetInteger("dir"));
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.flipX = !spriteRenderer.flipX;
+            return;
+        }
+        else
+        {
+            anim.SetBool("isTouching", false);
+            SetPLayerFilpX(4);
+        }
+        if (isUp && !isDown)
         {
             SetPlayerMove(0, 1 * Time.deltaTime);
             SetPLayerAnimation(3, true);
@@ -84,12 +107,13 @@ public class Player : MonoBehaviour
         else if (isRight && !isLeft)
         {
             SetPlayerMove(1 * Time.deltaTime, 0);
-            SetPLayerAnimation(1, true);
+            SetPLayerAnimation(2, true);
         }
         else if (!isRight && isLeft)
         {
             SetPlayerMove(-1 * Time.deltaTime, 0);
-            SetPLayerAnimation(2, true);
+            SetPLayerAnimation(1, true);
+            
         }
         else if(!(((isRight|| isLeft) || isDown) || isUp))
         {
@@ -122,9 +146,8 @@ public class Player : MonoBehaviour
         //var newXPos = Mathf.Clamp(transform.position.x + deltaX, xMin, xMax);
         //var newYPos = Mathf.Clamp(transform.position.y + deltaY, yMin, yMax);
         //transform.position = new Vector3(newXPos, newYPos, -3);
-        if (Input.GetKey(KeyCode.L))
+        if (Input.GetKey(KeyCode.C))
         {
-            isTouch = true;
             anim.SetBool("isWalking", false);
             anim.SetBool("isTouching", true);
             SetPLayerFilpX(anim.GetInteger("dir"));
@@ -134,11 +157,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            isTouch = false;
             anim.SetBool("isTouching", false);
             SetPLayerFilpX(4);
         }
-        if (Input.GetKey(KeyCode.K))
+        if (Input.GetKey(KeyCode.Z))
         {
             if (canWorking)
             {
@@ -155,12 +177,12 @@ public class Player : MonoBehaviour
             anim.SetBool("isWorking", false);
             SetPLayerFilpX(4);
         }
-        /*if (Input.GetKey(KeyCode.X))
+        if (Input.GetKey(KeyCode.X))
         {
             SetPLayerFilpX(anim.GetInteger("dir"));
             PlayerFallDown();
             return;
-        }*/
+        }
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
@@ -191,87 +213,6 @@ public class Player : MonoBehaviour
             anim.SetBool("isWalking", false);
         }
     }
-
-
-    private void Move2()
-    {
-        //var deltaX = Input.GetAxis("Horizontal") * Time.deltaTime * moveSpeed;
-        //var deltaY = Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed;
-
-        //var newXPos = Mathf.Clamp(transform.position.x + deltaX, xMin, xMax);
-        //var newYPos = Mathf.Clamp(transform.position.y + deltaY, yMin, yMax);
-        //transform.position = new Vector3(newXPos, newYPos, -3);
-        if (Input.GetKey(KeyCode.R))
-        {
-            isTouch = true;
-            anim.SetBool("isWalking", false);
-            anim.SetBool("isTouching", true);
-            SetPLayerFilpX(anim.GetInteger("dir"));
-            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-            spriteRenderer.flipX = !spriteRenderer.flipX;
-            return;
-        }
-        else
-        {
-            isTouch = false;
-            anim.SetBool("isTouching", false);
-            SetPLayerFilpX(4);
-        }
-        if (Input.GetKey(KeyCode.F))
-        {
-            if (canWorking)
-            {
-                isWorking = true;
-                anim.SetBool("isWalking", false);
-                anim.SetBool("isWorking", true);
-                SetPLayerFilpX(anim.GetInteger("dir"));
-                return;
-            }
-        }
-        else
-        {
-            isWorking = false;
-            anim.SetBool("isWorking", false);
-            SetPLayerFilpX(4);
-        }
-        /*if (Input.GetKey(KeyCode.X))
-        {
-            SetPLayerFilpX(anim.GetInteger("dir"));
-            PlayerFallDown();
-            return;
-        }*/
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            SetPlayerMove(0, 1 * Time.deltaTime);
-            anim.SetInteger("dir", 3);
-            anim.SetBool("isWalking", true);
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            SetPlayerMove(0, -1 * Time.deltaTime);
-            anim.SetInteger("dir", 0);
-            anim.SetBool("isWalking", true);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            SetPlayerMove(1 * Time.deltaTime, 0);
-            anim.SetInteger("dir", 2);
-            anim.SetBool("isWalking", true);
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            SetPlayerMove(-1 * Time.deltaTime, 0);
-            anim.SetInteger("dir", 1);
-            anim.SetBool("isWalking", true);
-        }
-        else
-        {
-            anim.SetBool("isWalking", false);
-        }
-    }
-
-
 
     public void PlayerDo(string doThing,bool isPressed)
     {
@@ -327,14 +268,17 @@ public class Player : MonoBehaviour
                     isRepair = false;
                 }
                 break;
-            case "Discard":
+            case "Touch":
                 if (isPressed)
                 {
-                    isDiscard = true;
+                    if (!isRepair)
+                    {
+                        isTouch = true;
+                    }                    
                 }
                 else
                 {
-                    isDiscard = false;
+                    isTouch = false;
                 }
                 break;
             default:
@@ -445,4 +389,5 @@ public class Player : MonoBehaviour
     {
         return isTouch;
     }
+
 }

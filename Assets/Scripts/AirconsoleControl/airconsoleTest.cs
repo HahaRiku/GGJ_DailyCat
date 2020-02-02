@@ -5,8 +5,8 @@ using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
 public class airconsoleTest : MonoBehaviour
 {
-    public Dictionary<int, AirconsolePlayer> players = new Dictionary<int, AirconsolePlayer>();
-    [SerializeField] private List<AirconsolePlayer> playerCon=new List<AirconsolePlayer>();
+    public Dictionary<int, Player> players = new Dictionary<int, Player>();
+    [SerializeField] private List<Player> playerCon=new List<Player>();
 
     private int DeviceCount = 0;
     void Awake()
